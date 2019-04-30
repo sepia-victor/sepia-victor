@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+}
+
+div div {
+  padding: 5px;
+}
+
+#name {
+  margin: 5px 15px;
+}
+
+img {
+  max-width: 50%;
+}
+
+#profile-pic {
+  border-radius: 50%;
+}
+
+#profile {
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+#basic-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.post {
+  border: 1px solid lightblue;
+  border-radius: 5px;
+  margin: 5px auto;
+}
+
+.post-text {
+  font-style: italic;
+}
+
+.flex-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+#about {
+  flex: 2;
+  background-color: darkgreen;
+  border-radius: 0 8px 8px 0;
+  color: #f4f4f4;
+}
+
+#posts {
+  flex: 3;
+  text-align: center;
+}
+
+#posts h3 {
+  text-decoration: underline;
+}
+
+#submit-post {
+  background-color: #6495ed;
+  border-radius: 5px;
+  color: #f4f4f4;
+}
+
+.delete-post {
+  background-color: red;
+  border-radius: 2px;
+  color: #f4f4f4;
+}
