@@ -18,3 +18,4 @@ CONTRACT
 - Keep features/task small (around a day per task)
 - Weekends are good for bug-fixing and polish- NOT new features
 - Respect the master
+- Code unto others, as you would code unto yourself
