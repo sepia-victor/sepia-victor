@@ -9,6 +9,7 @@ export default class AuctionList extends Component {
   constructor() {
     super();
     this.state = {
+      name: "Foo",
       auctions: []
     };
   }
@@ -18,8 +19,8 @@ export default class AuctionList extends Component {
     try {
         let holdArr = []
         let snapshot = await auctionsQuery.get();
-        snapshot.forEach(doc => {
-          holdArr.push(doc.data());
+        await snapshot.forEach(async doc => {
+          await holdArr.push(doc.data());
         });
         return holdArr
       } catch (error) {
@@ -27,11 +28,15 @@ export default class AuctionList extends Component {
       }
   }
 
-  componentDidUpdate(){
+  async componentDidUpdate(){
     console.log(this.getDataArray())
+    this.setState({
+      name: 'Bar',
+      auctions: await this.getDataArray()
+    });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let holdArr = [1,3,4];
     let auctionsQuery = fireApp.firestore().collection("auctions");
     // auctionsQuery.get().then(snapshot => { snapshot.forEach(doc => console.log(doc.data()))});
@@ -52,7 +57,8 @@ export default class AuctionList extends Component {
     // }
 
     this.setState({
-      auctions:[1,2,3]
+      name: 'Bar',
+      auctions: await this.getDataArray()
     });
     console.log(this.state)
 
