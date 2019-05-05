@@ -5,7 +5,8 @@ import fireApp from './fire';
 import './App.css';
 import { ThemeProvider, Card, Heading } from 'pcln-design-system';
 
-// Import footer component
+// Import navbar & footer components
+import Navbar from './components/layout/navbar';
 import Footer from './components/layout/footer';
 
 //Import the ACTUAL firebase library
@@ -62,6 +63,7 @@ class App extends React.Component {
     return (
       <ThemeProvider>
         <div className="App">
+          <Navbar />
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <p>
