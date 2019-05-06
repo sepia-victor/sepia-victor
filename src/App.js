@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 //Import the Firebase App as configured for our setup
 import './App.css';
 import { ThemeProvider } from 'pcln-design-system';
@@ -7,6 +8,8 @@ import { ThemeProvider } from 'pcln-design-system';
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import Footer from './components/layout/Footer';
+
+import Auction from './components/auctions/Auction';
 
 // //Import the ACTUAL firebase library
 // import firebase from 'firebase';
@@ -62,11 +65,14 @@ class App extends React.Component {
   render() {
     return (
       <ThemeProvider>
-        <div className="App">
-          <Navbar />
-          <Landing />
-          <Footer />
-        </div>
+        <Router>
+          <div className="App">
+            <Navbar />
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/auctions" component={Auction} />
+            <Footer />
+          </div>
+        </Router>
       </ThemeProvider>
     );
   }
