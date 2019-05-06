@@ -6,6 +6,7 @@ import { Card, Heading } from "pcln-design-system";
 import firebase from "firebase";
 
 import { getAuctionsData, addAuction }  from '../scripts/Auctions.Data'
+import { getBidsData, addBidData, highestBidData } from '../scripts/Bids.Data'
 
 export default class AuctionList extends Component {
   constructor() {
@@ -64,13 +65,17 @@ export default class AuctionList extends Component {
     // }
 
     this.setState({
-      name: 'Bar',
+      // name: 'Bar',
       // auctions: await this.getDataArray()
       auctions: await getAuctionsData()
     });
     console.log(this.state)
 
-    await addAuction();
+    // await addAuction();
+    // let bidData= await getBidsData('H8ud54fFftYOdZWdgD2v')
+    // let addBid = await addBidData('H8ud54fFftYOdZWdgD2v', 'INAh1ztLO8Y2gpw99MNv0TM2BRV2', 40)
+    let highBid = await highestBidData('H8ud54fFftYOdZWdgD2v')
+    console.log(highBid)
 
     // await auctionsQuery.get().then(async snapshot => await snapshot.forEach(doc=> holdArr.push(doc.data()))).then( console.log(holdArr)).catch(err=>console.error(err));
 
@@ -84,7 +89,7 @@ export default class AuctionList extends Component {
     <div>
       {this.state.auctions.map(auction =>(
         <div>
-          {auction.availableDate.seconds}
+          {auction.userId}
         </div>
       ))}
     </div>);

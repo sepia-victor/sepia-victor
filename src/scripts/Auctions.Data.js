@@ -6,12 +6,12 @@ import firebase from "firebase";
 // minBid, buyNowBid, availability start/end timestamps, start/end dates
 // Does: Adds a new Auction to the collection Auctions mapping the given data to the key value stores to the user specific auction
 // Return: Success/Fail log
-const addAuction = async newAuctionData => {
+const addAuction = async (newAuctionData) => {
   let addAuctionQuery = fireApp.firestore().collection("auctions");
   try {
     let newAuction = await addAuctionQuery.add({
-      availableStartDate: 0,
-      availableEndDate: 1000,
+      availableStartDate: new firebase.firestore.Timestamp(0,0),
+      availableEndDate: new firebase.firestore.Timestamp(1000, 0),
       startDate: 0,
       endDate: 1000,
       minimumBid: 50,
