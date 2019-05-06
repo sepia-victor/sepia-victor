@@ -22,18 +22,18 @@ export default class AuctionList extends Component {
         await snapshot.forEach(async doc => {
           await holdArr.push(doc.data());
         });
-        return holdArr
+        return await holdArr
       } catch (error) {
         console.error(error);
       }
   }
 
   async componentDidUpdate(){
-    console.log(this.getDataArray())
-    this.setState({
-      name: 'Bar',
-      auctions: await this.getDataArray()
-    });
+    // console.log(this.getDataArray())
+    // this.setState({
+    //   name: 'Bar',
+    //   auctions: await this.getDataArray()
+    // });
   }
 
   async componentDidMount() {
@@ -70,6 +70,13 @@ export default class AuctionList extends Component {
   }
 
   render() {
-    return (<div>AuctionList</div>);
+    return (
+    <div>
+      {this.state.auctions.map(auction =>(
+        <div>
+          {auction.userId}
+        </div>
+      ))}
+    </div>);
   }
 }
