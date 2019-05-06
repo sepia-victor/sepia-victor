@@ -10,6 +10,7 @@ import Landing from './components/layout/Landing';
 import Footer from './components/layout/Footer';
 
 import Auction from './components/auctions/Auction';
+import MapContainer from './components/maps/MapContainer';
 
 // //Import the ACTUAL firebase library
 // import firebase from 'firebase';
@@ -68,8 +69,11 @@ class App extends React.Component {
         <Router>
           <div className="App">
             <Navbar />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/auctions" component={Auction} />
+            <div className="container">
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/auctions" component={Auction} />
+              <Route exact path="/maps" component={MapContainer} />
+            </div>
             <Footer />
           </div>
         </Router>
