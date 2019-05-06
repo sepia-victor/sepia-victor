@@ -1,7 +1,35 @@
+import fireApp from "../fire";
+import firebase from "firebase";
+
 // Add Auction
 // Receive: Auction Data {Location: Geolocation, UserId, etc}
+// minBid, buyNowBid, availability start/end timestamps, start/end dates
 // Does: Adds a new Auction to the collection Auctions mapping the given data to the key value stores to the user specific auction
 // Return: Success/Fail log
+const addAuction = async newAuctionData => {
+  let addAuctionQuery = fireApp.firestore().collection("auctions");
+  try {
+    let newAuction = await addAuctionQuery.add({
+      availableStartDate: 0,
+      availableEndDate: 1000,
+      startDate: 0,
+      endDate: 1000,
+      minimumBid: 50,
+      buyNowBid: 200,
+      userId: "frfefrerf",
+      location: {
+        city: "New York",
+        state: "NY",
+        geoPosition: new firebase.firestore.GeoPoint( 1.345 , 3.456 ),
+      },
+
+
+    });
+    console.log( 'doc written' , newAuction);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // Remove Auction
 // Receive: AuctionID and UserId
@@ -17,6 +45,19 @@
 // Receives: Nothing
 // Does: Gets all the auctions currently available from the Firestore database where the action's Live boolean is true
 // Returns: An array containing all LIVE actions
+const getAuctionsData = async () => {
+  let auctionsQuery = fireApp.firestore().collection("auctions");
+  try {
+    let auctionsArray = [];
+    let snapshot = await auctionsQuery.get();
+    await snapshot.forEach(async doc => {
+      await auctionsArray.push(doc.data());
+    });
+    return await auctionsArray;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // Get Auction's Bids
 
@@ -46,3 +87,5 @@
 // Receive: UserGeoLocation, List of Auctions, Radius
 // Does: Check all the Auctions in the list of auctions for auctions that that are within the radius of the UserGeoLocation
 // Return: List of Auctions close to UserGeoLocation
+
+export { getAuctionsData , addAuction };

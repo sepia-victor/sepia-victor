@@ -5,6 +5,8 @@ import fireApp from "../fire";
 import { Card, Heading } from "pcln-design-system";
 import firebase from "firebase";
 
+import { getAuctionsData, addAuction }  from '../scripts/Auctions.Data'
+
 export default class AuctionList extends Component {
   constructor() {
     super();
@@ -13,6 +15,11 @@ export default class AuctionList extends Component {
       auctions: []
     };
   }
+
+  //DateConversion
+  //Receives: a date
+  // Does: converts date to seconds
+  // Return: Seconds integer
 
   async getDataArray(){
     let auctionsQuery = fireApp.firestore().collection("auctions");
@@ -58,9 +65,12 @@ export default class AuctionList extends Component {
 
     this.setState({
       name: 'Bar',
-      auctions: await this.getDataArray()
+      // auctions: await this.getDataArray()
+      auctions: await getAuctionsData()
     });
     console.log(this.state)
+
+    await addAuction();
 
     // await auctionsQuery.get().then(async snapshot => await snapshot.forEach(doc=> holdArr.push(doc.data()))).then( console.log(holdArr)).catch(err=>console.error(err));
 
@@ -74,7 +84,7 @@ export default class AuctionList extends Component {
     <div>
       {this.state.auctions.map(auction =>(
         <div>
-          {auction.userId}
+          {auction.availableDate.seconds}
         </div>
       ))}
     </div>);
