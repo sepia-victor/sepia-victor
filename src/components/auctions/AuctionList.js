@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { error } from "util";
 
-import fireApp from "../fire";
+import fireApp from "../../fire";
 import { Card, Heading } from "pcln-design-system";
 import firebase from "firebase";
 
-import { getAuctionsData, addAuction, getSingleAuctionData }  from '../scripts/Auctions.Data'
-import { getBidsData, addBidData, highestBidData } from '../scripts/Bids.Data'
+import { getAuctionsData, addAuction, getSingleAuctionData }  from '../../scripts/Auctions.Data'
+import { getBidsData, addBidData, highestBidData } from '../../scripts/Bids.Data'
 
 import AuctionPage from "./AuctionPage"
 
@@ -91,8 +91,9 @@ export default class AuctionList extends Component {
     return (
     <div>
       {this.state.auctions.map(auction =>(
+        //<AuctionPage auctionId={auction.id}/>
         <div>
-          {auction.userId}
+          {auction.id}
         </div>
       ))}
     </div>);
