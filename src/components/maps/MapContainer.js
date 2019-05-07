@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
-// import googleConfig from '../../keys.js';
+import googleConfig from '../../keys.js';
 
 import CurrentLocation from './Map';
 
@@ -46,5 +46,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyA_4FaPv-05bqajCppfJqmOw_5e3DwARqg'
+  apiKey: googleConfig.GOOGLE_API_KEY
 })(MapContainer);
