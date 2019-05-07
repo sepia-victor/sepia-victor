@@ -8,7 +8,7 @@ import { ThemeProvider } from "pcln-design-system";
 // Import navbar, landing & footer components
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
-import Footer from "./components/layout/Footer";
+import Footer from "./components/layout/Footer.js";
 import SideDrawer from "./components/layout/SideDrawer";
 import Backdrop from "./components/layout/Backdrop";
 import Auction from "./components/auctions/Auction";
