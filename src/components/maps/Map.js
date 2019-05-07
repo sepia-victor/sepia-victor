@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { getAuctionsData } from '../../scripts/Auctions.Data';
 
 const mapStyles = {
   map: {
@@ -8,6 +9,17 @@ const mapStyles = {
     height: '100%'
   }
 };
+
+// let currAuctions;
+// const getAuctions = async () => {
+//   try {
+//     currAuctions = await getAuctionsData();
+//     console.log('------> ', currAuctions);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
 export class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
@@ -17,20 +29,23 @@ export class CurrentLocation extends React.Component {
       currentLocation: {
         lat: lat,
         lng: lng
-      }
+      },
+      currAuctions: []
     };
   }
   componentDidMount() {
     if (this.props.centerAroundCurrentLocation) {
       if (navigator && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
+        navigator.geolocation.getCurrentPosition(async pos => {
           const coords = pos.coords;
           this.setState({
             currentLocation: {
               lat: coords.latitude,
               lng: coords.longitude
-            }
+            },
+            currAuctions: await getAuctionsData()
           });
+          console.log('currAuctions: ', this.state.currActions);
         });
       }
     }
@@ -91,13 +106,25 @@ export class CurrentLocation extends React.Component {
         fillOpacity: 0.35,
         map: this.map,
         center: center,
-        radius: 300
+        radius: 333
       });
 
-      let marker1 = new maps.Marker({
-        position: new maps.LatLng(40.7033, -74.0089),
-        map: this.map
-      });
+      for (let i = 0; i < this.state.currAuctions.length; i++) {
+        let markerLat = this.state.currAuctions[i].location.geoPosition._lat;
+        let markerLng = this.state.currAuctions[i].location.geoPosition._long;
+        console.log('markerLat: ', markerLat);
+        console.log('markerLng: ', markerLng);
+
+        if (
+          Math.abs(markerLat - current.lat) <= 0.003 &&
+          Math.abs(markerLng - current.lng) <= 0.003
+        ) {
+          new maps.Marker({
+            position: new maps.LatLng(markerLat, markerLng),
+            map: this.map
+          });
+        }
+      }
     }
   }
 
