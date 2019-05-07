@@ -121,7 +121,10 @@ export class CurrentLocation extends React.Component {
         ) {
           new maps.Marker({
             position: new maps.LatLng(markerLat, markerLng),
-            map: this.map
+            map: this.map,
+            icon: {
+              url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            }
           });
         }
       }
