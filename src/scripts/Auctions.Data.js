@@ -44,20 +44,36 @@ const addAuction = async (newAuctionData) => {
 // Get Auctions
 // Receives: Nothing
 // Does: Gets all the auctions currently available from the Firestore database where the action's Live boolean is true
-// Returns: An array containing all LIVE actions
+// Returns: An array of objects containing the Id of an Auction and the data of said auction
 const getAuctionsData = async () => {
   let auctionsQuery = fireApp.firestore().collection("auctions");
   try {
     let auctionsArray = [];
     let snapshot = await auctionsQuery.get();
     await snapshot.forEach(async doc => {
-      await auctionsArray.push(doc.data());
+      let data = await doc.data();
+      data.id = doc.id;
+      auctionsArray.push(data)
     });
     return await auctionsArray;
   } catch (error) {
     console.log(error);
   }
 };
+
+// Get Single Auction
+// Receives: AuctionId
+// Does: Pulls the Auction Data from the document with given AuctionId
+// Returns: Auction
+const getSingleAuctionData = async(auctionId)=>{
+  let auctionsQuery = fireApp.firestore().collection("auctions");
+  try{
+    let auctionDoc = await auctionsQuery.doc(auctionId).get()
+    return auctionDoc.data()
+  }catch(err0r){
+    console.error(err0r)
+  }
+}
 
 // Get Auction's Bids
 
@@ -88,4 +104,4 @@ const getAuctionsData = async () => {
 // Does: Check all the Auctions in the list of auctions for auctions that that are within the radius of the UserGeoLocation
 // Return: List of Auctions close to UserGeoLocation
 
-export { getAuctionsData , addAuction };
+export { getAuctionsData , addAuction, getSingleAuctionData };
