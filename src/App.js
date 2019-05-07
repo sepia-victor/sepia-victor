@@ -96,9 +96,9 @@ class App extends React.Component {
               <SideDrawer show={this.state.sideDrawerOpen}  />
 
               {backdrop}
-              <main style={{ marginTop: "64px" }}>
+              {/* <main style={{ marginTop: "64px" }}>
                 <p>This is the page content!</p>
-              </main>
+              </main> */}
               <SideDrawer />
               <div className="container">
               <Route exact path="/" component={Landing} />

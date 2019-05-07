@@ -2,9 +2,19 @@ import React, { Component } from "react";
 import { error } from "util";
 
 import fireApp from "../../fire";
-import { Card, Heading, Icon, Box, Text, Flex } from "pcln-design-system";
+import {
+  Card,
+  Heading,
+  Icon,
+  Box,
+  Text,
+  Flex,
+  Button
+} from "pcln-design-system";
 
 import firebase from "firebase";
+
+import { Link } from "react-router-dom";
 
 import {
   getAuctionsData,
@@ -24,8 +34,10 @@ export default class AuctionList extends Component {
     super();
     this.state = {
       name: "Foo",
-      auctions: []
+      auctions: [],
+      singleAuction: {}
     };
+    this.handleSeeDetails = this.handleSeeDetails.bind(this);
   }
 
   //DateConversion
@@ -96,6 +108,13 @@ export default class AuctionList extends Component {
     });
   }
 
+  handleSeeDetails(singleAuction) {
+    console.log("parameter--->   ", singleAuction);
+    this.setState({
+      singleAuction
+    });
+  }
+
   render() {
     return (
       <div>
@@ -111,15 +130,25 @@ export default class AuctionList extends Component {
               </Text>
               <Text px={2}>Minimum Bid: ${auction.minimumBid}</Text>
               <Text px={2}>Grab Now Bid: ${auction.buyNowBid}</Text>
+              <Button
+                size="small"
+                onClick={e => this.handleSeeDetails(auction)}
+              >
+                See Details
+              </Button>
             </Box>
           ))}
         </Flex>
+
+        {this.state.singleAuction.id && (
+          <Box key={this.state.singleAuction.id} p={3}>
+            <Text px={2}>
+              {this.state.singleAuction.location.city},{" "}
+              {this.state.singleAuction.location.state}
+            </Text>
+          </Box>
+        )}
       </div>
     );
   }
-}
-
-{
-  /* <Box p={1} bg="lightBlue" key={auction.id}>
-          </Box> */
 }
