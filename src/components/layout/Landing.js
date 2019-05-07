@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import logo from '../../logo.svg';
 //Import the Firebase App as configured for our setup
 import fireApp from '../../fire';
@@ -78,13 +79,15 @@ class Landing extends React.Component {
               </div>
             )}
             {this.state.isSignedIn && (
-              <div>
-                Hello {fireApp.auth().currentUser.displayName}. You are now
-                signed In!
-                <a type="button" onClick={() => fireApp.auth().signOut()}>
-                  Sign Out
-                </a>
-              </div>
+              <Redirect to="/maps" />
+
+              // <div>
+              //   Hello {fireApp.auth().currentUser.displayName}. You are now
+              //   signed In!
+              //   <a type="button" onClick={() => fireApp.auth().signOut()}>
+              //     Sign Out
+              //   </a>
+              // </div>
             )}
           </header>
         </div>
