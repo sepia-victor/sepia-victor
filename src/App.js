@@ -12,13 +12,16 @@ import Footer from "./components/layout/Footer.js";
 import SideDrawer from "./components/layout/SideDrawer";
 import Backdrop from "./components/layout/Backdrop";
 import Auction from "./components/auctions/Auction";
+import MapContainer from './components/maps/MapContainer';
 
-// //Import the ACTUAL firebase library
-// import firebase from 'firebase';
-// //Import the Firebase Authorization
-// import 'firebase/auth';
-// //Import the Firebase UI package
-// import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+//Import the ACTUAL firebase library
+import firebase from 'firebase';
+//Import the Firebase Authorization
+import 'firebase/auth';
+//Import the Firebase UI package
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+
+import AuctionList from './components/AuctionList';
 
 // function Auctions(){
 //   this.dialogs = {}
@@ -99,9 +102,12 @@ class App extends React.Component {
                 <p>This is the page content!</p>
               </main>
               <SideDrawer />
+              <div className="container">
               <Route exact path="/" component={Landing} />
               <Route exact path="/auctions" component={Auction} />
+              <Route exact path="/maps" component={MapContainer} />
               <Footer />
+              </div>
             </div>
           </div>
         </Router>

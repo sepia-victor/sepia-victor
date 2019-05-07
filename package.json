@@ -6,6 +6,7 @@
     "firebase": "^5.11.0",
     "firebase-cli": "^1.2.0",
     "firebase-tools": "^6.7.2",
+    "google-maps-react": "^2.0.2",
     "pcln-design-system": "^2.0.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
