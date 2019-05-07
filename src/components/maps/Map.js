@@ -93,6 +93,11 @@ export class CurrentLocation extends React.Component {
         center: center,
         radius: 300
       });
+
+      let marker1 = new maps.Marker({
+        position: new maps.LatLng(40.7033, -74.0089),
+        map: this.map
+      });
     }
   }
 
