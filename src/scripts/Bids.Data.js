@@ -62,10 +62,10 @@ const highestBidData = async auctionId => {
     let unsub = await bidsQuery
       .collection('bids')
       .orderBy('offer', 'desc')
-      .onSnapshot(async function(snapshot) {
+      .onSnapshot(snapshot => {
         console.log('bids.data.js snapshot--> ', snapshot.docs[0].data());
-        highBid.offer = await snapshot.docs[0].data().offer;
-        highBid.userId = await snapshot.docs[0].data().userId;
+        highBid.offer = snapshot.docs[0].data().offer;
+        highBid.userId = snapshot.docs[0].data().userId;
       });
     return await { unsub, highBid };
   } catch (error) {
