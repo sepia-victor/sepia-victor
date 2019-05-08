@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 //Import the Firebase App as configured for our setup
-import "./App.css";
-import { ThemeProvider } from "pcln-design-system";
+import './App.css';
+import { ThemeProvider } from 'pcln-design-system';
 
 // Import navbar, landing & footer components
-import Navbar from "./components/layout/Navbar";
-import Landing from "./components/layout/Landing";
-import Footer from "./components/layout/Footer.js";
-import SideDrawer from "./components/layout/SideDrawer";
-import Backdrop from "./components/layout/Backdrop";
-import Auction from "./components/auctions/AuctionList";
+import Navbar from './components/layout/Navbar';
+import Landing from './components/layout/Landing';
+import Footer from './components/layout/Footer.js';
+import SideDrawer from './components/layout/SideDrawer';
+import Backdrop from './components/layout/Backdrop';
+import Auction from './components/auctions/AuctionList';
 import MapContainer from './components/maps/MapContainer';
 
 //Import the ACTUAL firebase library
@@ -20,6 +20,8 @@ import firebase from 'firebase';
 import 'firebase/auth';
 //Import the Firebase UI package
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import AddBid from './components/bids/AddBid';
+import { highestBidData } from './scripts/Bids.Data';
 
 // function Auctions(){
 //   this.dialogs = {}
@@ -35,50 +37,20 @@ class App extends React.Component {
   };
   drawerToggleClickHandler = () => {
     this.setState(prevState => {
-      return { sideDrawerOpen: !prevState.sideDrawerOpen};
+      return { sideDrawerOpen: !prevState.sideDrawerOpen };
     });
-    console.log(this.state.sideDrawerOpen)
+    console.log(this.state.sideDrawerOpen);
   };
 
   backdropClickHandler = () => {
     this.setState({ sideDrawerOpen: false });
-    console.log(this.state.sideDrawerOpen)
+    console.log(this.state.sideDrawerOpen);
   };
 
-  //uiConfig - this is a set of configuration tools that will be used by the React-FirebaseUI module
-  // uiConfig = {
-  //   signInFlow: 'popup',
-  //   signInOptions: [
-  //     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  //     firebase.auth.EmailAuthProvider.PROVIDER_ID
-  //   ]
-  // };
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     auctions: [],
-  //     isSignedIn: undefined
-  //   };
-  // }
-  // componentWillMount() {
-  //   let auctionsQuery = fireApp.firestore().collection('auctions');
-  //   auctionsQuery.doc('H8ud54fFftYOdZWdgD2v').onSnapshot(doc => {
-  //     console.log('Current data', doc.data());
-  //     this.unregisterAuthObserver = fireApp.auth().onAuthStateChanged(user => {
-  //       this.setState({ isSignedIn: !!user });
-  //     });
-  //   });
-
-  // auctionsRef("child_added", snapshot => {
-  //   let auction = { userId: snapshot.val(), id: snapshot.key };
-  //   this.setState({ auctions: [auction].concat(this.state.auctions) });
-  // });
-  // }
-
-  // componentWillUnmount() {
-  //   this.unregisterAuthObserver();
-  // }
+  async componentDidMount() {
+    let highBid = await highestBidData('H8ud54fFftYOdZWdgD2v');
+    await console.log('highBid--->  ', highBid);
+  }
 
   render() {
     let backdrop;
@@ -91,9 +63,9 @@ class App extends React.Component {
       <ThemeProvider>
         <Router>
           <div className="App">
-            <div style={{ height: "100%" }}>
+            <div style={{ height: '100%' }}>
               <Navbar drawerClickHandler={this.drawerToggleClickHandler} />
-              <SideDrawer show={this.state.sideDrawerOpen}  />
+              <SideDrawer show={this.state.sideDrawerOpen} />
 
               {backdrop}
               {/* <main style={{ marginTop: "64px" }}>
@@ -101,10 +73,16 @@ class App extends React.Component {
               </main> */}
               <SideDrawer />
               <div className="container">
-              <Route exact path="/" component={Landing} />
-              <Route exact path="/auctions" component={Auction} />
-              <Route exact path="/maps" component={MapContainer} />
-              <Footer />
+                <Route exact path="/" component={Landing} />
+                <Route exact path="/auctions" component={Auction} />
+                <Route exact path="/maps" component={MapContainer} />
+                <Route
+                  exact
+                  path="/bids"
+                  component={AddBid}
+                  auctionId="H8ud54fFftYOdZWdgD2v"
+                />
+                <Footer />
               </div>
             </div>
           </div>
