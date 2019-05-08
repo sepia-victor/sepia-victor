@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Redirect } from 'react-router';
+import { getAuctionsData } from '../../scripts/Auctions.Data';
 
 const mapStyles = {
   map: {
@@ -8,6 +10,7 @@ const mapStyles = {
     height: '100%'
   }
 };
+
 export class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
@@ -17,20 +20,32 @@ export class CurrentLocation extends React.Component {
       currentLocation: {
         lat: lat,
         lng: lng
-      }
+      },
+      currAuctions: [],
+      redirect: false
     };
+
+    this.routeChange = this.routeChange.bind(this);
   }
+
+  routeChange() {
+    console.log('clicked Marker');
+    this.setState({ redirect: true });
+  }
+
   componentDidMount() {
     if (this.props.centerAroundCurrentLocation) {
       if (navigator && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
+        navigator.geolocation.getCurrentPosition(async pos => {
           const coords = pos.coords;
           this.setState({
             currentLocation: {
               lat: coords.latitude,
               lng: coords.longitude
-            }
+            },
+            currAuctions: await getAuctionsData()
           });
+          console.log('currAuctions: ', this.state.currActions);
         });
       }
     }
@@ -72,6 +87,10 @@ export class CurrentLocation extends React.Component {
     }
   }
 
+  onMarkerClick(props, marker, e) {
+    this.state.redirect = true;
+  }
+
   recenterMap() {
     const map = this.map;
     const current = this.state.currentLocation;
@@ -91,13 +110,32 @@ export class CurrentLocation extends React.Component {
         fillOpacity: 0.35,
         map: this.map,
         center: center,
-        radius: 300
+        radius: 333
       });
 
-      let marker1 = new maps.Marker({
-        position: new maps.LatLng(40.7033, -74.0089),
-        map: this.map
-      });
+      for (let i = 0; i < this.state.currAuctions.length; i++) {
+        let markerLat = this.state.currAuctions[i].location.geoPosition._lat;
+        let markerLng = this.state.currAuctions[i].location.geoPosition._long;
+        console.log('markerLat: ', markerLat);
+        console.log('markerLng: ', markerLng);
+        // const routeChange = () => {
+        //   return <Redirect to="/auctions" />;
+
+        if (
+          Math.abs(markerLat - current.lat) <= 0.003 &&
+          Math.abs(markerLng - current.lng) <= 0.003
+        ) {
+          let marker = new maps.Marker({
+            id: this.state.currAuctions[i].id,
+            position: new maps.LatLng(markerLat, markerLng),
+            map: this.map,
+            icon: {
+              url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            }
+          });
+          marker.addListener('click', this.routeChange);
+        }
+      }
     }
   }
 
@@ -119,16 +157,21 @@ export class CurrentLocation extends React.Component {
   render() {
     const style = Object.assign({}, mapStyles.map);
 
-    return (
-      <div>
-        <div style={style} ref="map">
-          Loading map...
+    if (this.state.redirect) {
+      return <Redirect push to="/auctions" />;
+    } else {
+      return (
+        <div>
+          <div style={style} ref="map">
+            Loading map...
+          </div>
+          {this.renderChildren()}
         </div>
-        {this.renderChildren()}
-      </div>
-    );
+      );
+    }
   }
 }
+
 export default CurrentLocation;
 
 CurrentLocation.defaultProps = {

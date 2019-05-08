@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, Router } from 'react-router-dom';
 import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import googleConfig from '../../keys.js';
 
