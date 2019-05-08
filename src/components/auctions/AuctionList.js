@@ -27,65 +27,25 @@ import {
   highestBidData
 } from "../../scripts/Bids.Data";
 
-import AuctionPage from "./AuctionPage";
-
 export default class AuctionList extends Component {
   constructor() {
     super();
     this.state = {
       name: "Foo",
       auctions: [],
-      singleAuction: {}
+      singleAuction: {},
+      style: {
+        width: 350
+      }
     };
     this.handleSeeDetails = this.handleSeeDetails.bind(this);
-  }
-
-  //DateConversion
-  //Receives: a date
-  // Does: converts date to seconds
-  // Return: Seconds integer
-
-  // async getDataArray(){
-  //   let auctionsQuery = fireApp.firestore().collection("auctions");
-  //   try {
-  //       let holdArr = []
-  //       let snapshot = await auctionsQuery.get();
-  //       await snapshot.forEach(async doc => {
-  //         await holdArr.push(doc.data());
-  //       });
-  //       return await holdArr
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  // }
-
-  async componentDidUpdate() {
-    // console.log(this.getDataArray())
-    // this.setState({
-    //   name: 'Bar',
-    //   auctions: await this.getDataArray()
-    // });
+    this.openNav = this.openNav.bind(this);
+    this.closeNav = this.closeNav.bind(this);
   }
 
   async componentDidMount() {
     let holdArr = [1, 3, 4];
     let auctionsQuery = fireApp.firestore().collection("auctions");
-    // auctionsQuery.get().then(snapshot => { snapshot.forEach(doc => console.log(doc.data()))});
-    // try {
-    //   let snapshot = auctionsQuery.get
-    // } catch (error) {
-    //   console.error(error)
-    // }
-    // try {
-    //   let snapshot = await auctionsQuery.get();
-    //   snapshot.forEach(doc => {
-    //     holdArr.push(doc.data());
-    //   });
-    //   console.log("---->", holdArr);
-
-    // } catch (error) {
-    //   console.error(error);
-    // }
 
     this.setState({
       // name: 'Bar',
@@ -106,6 +66,8 @@ export default class AuctionList extends Component {
     this.unregisterAuthObserver = fireApp.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user });
     });
+
+    document.addEventListener("click", this.closeNav);
   }
 
   handleSeeDetails(singleAuction) {
@@ -113,6 +75,24 @@ export default class AuctionList extends Component {
     this.setState({
       singleAuction
     });
+    this.openNav();
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("click", this.closeNav);
+  }
+  openNav() {
+    const style = { width: 350 };
+    this.setState({ style });
+    document.body.style.backgroundColor = "rgba(0,0,255)";
+    document.addEventListener("click", this.closeNav);
+  }
+
+  closeNav() {
+    document.removeEventListener("click", this.closeNav);
+    const style = { width: 0 };
+    this.setState({ style });
+    document.body.style.backgroundColor = "#F3F3F3";
   }
 
   render() {
@@ -140,14 +120,31 @@ export default class AuctionList extends Component {
           ))}
         </Flex>
 
-        {this.state.singleAuction.id && (
-          <Box key={this.state.singleAuction.id} p={3}>
-            <Text px={2}>
-              {this.state.singleAuction.location.city},{" "}
-              {this.state.singleAuction.location.state}
-            </Text>
-          </Box>
-        )}
+        <div>
+          {this.state.singleAuction.id && (
+            <div ref="snav" className="overlay" style={this.state.style}>
+              <div className="sidenav-container">
+                </div>
+                <div className="text-center">
+                <a
+                  href="javascript:void(0)"
+                  className="closebtn"
+                  onClick={this.closeNav}
+                >
+                  X
+                </a>
+                  {this.state.singleAuction.id && (
+                    <Box key={this.state.singleAuction.id} p={3}>
+                      <Text px={2}>
+                        {this.state.singleAuction.location.city},{" "}
+                        {this.state.singleAuction.location.state}
+                      </Text>
+                    </Box>
+                  )}{" "}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
