@@ -9,7 +9,7 @@ export default function Navbar() {
       </Text>
       <Text ml="auto" mr={4}>
         <FormField>
-          <Icon name="Parking" size="20" />
+          <Icon name="Search" size="20" />
           <Input id="location" name="location" placeholder="location" />
         </FormField>
       </Text>

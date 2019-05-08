@@ -11,7 +11,7 @@ import Landing from "./components/layout/Landing";
 import Footer from "./components/layout/Footer.js";
 import SideDrawer from "./components/layout/SideDrawer";
 import Backdrop from "./components/layout/Backdrop";
-import Auction from "./components/auctions/Auction";
+import Auction from "./components/auctions/AuctionList";
 import MapContainer from './components/maps/MapContainer';
 
 //Import the ACTUAL firebase library
@@ -20,8 +20,6 @@ import firebase from 'firebase';
 import 'firebase/auth';
 //Import the Firebase UI package
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-
-import AuctionList from './components/AuctionList';
 
 // function Auctions(){
 //   this.dialogs = {}
@@ -98,9 +96,9 @@ class App extends React.Component {
               <SideDrawer show={this.state.sideDrawerOpen}  />
 
               {backdrop}
-              <main style={{ marginTop: "64px" }}>
+              {/* <main style={{ marginTop: "64px" }}>
                 <p>This is the page content!</p>
-              </main>
+              </main> */}
               <SideDrawer />
               <div className="container">
               <Route exact path="/" component={Landing} />
