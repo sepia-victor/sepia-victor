@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header } from 'pcln-design-system';
+import { Flex, Box, FormField, Input, Icon } from 'pcln-design-system';
 import { highestBidData } from '../../scripts/Bids.Data';
 import { getSingleAuctionData } from '../../scripts/Auctions.Data';
 import fireApp from '../../fire';
@@ -52,7 +52,19 @@ class AddBid extends Component {
   }
 
   render() {
-    return <div>{this.state.highestCurrBid.offer}</div>;
+    return (
+      <Flex alignItems="center">
+        <Box width={1 / 2} p={2} m={2} bg="lightBlue">
+          Highest Current Bid: ${this.state.highestCurrBid.offer}
+        </Box>
+        <Box width={1 / 2} p={2} m={2} bg="lightGreen">
+          <FormField>
+            <Icon name="DollarCircle" size="20" />
+            <Input id="offer" name="offer" placeholder="Place Your Bid Here" />
+          </FormField>
+        </Box>
+      </Flex>
+    );
   }
 }
 
