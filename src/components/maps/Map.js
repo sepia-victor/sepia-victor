@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Redirect, browserHistory } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import { getAuctionsData } from '../../scripts/Auctions.Data';
 
 const mapStyles = {
