@@ -53,7 +53,7 @@ class AddBid extends Component {
 
   render() {
     return (
-      <Flex alignItems="center">
+      <Flex alignItems="center" flexDirection="column">
         <Box width={1 / 2} p={2} m={2} bg="lightBlue">
           Highest Current Bid: ${this.state.highestCurrBid.offer}
         </Box>
