@@ -66,10 +66,10 @@ class AddBid extends Component {
     return (
       <Flex alignItems="center" flexDirection="column">
         <Box width={1 / 2} p={2} m={2} bg="lightBlue">
-          {this.state.auction.availableDate && (
+          {this.state.auction.auctionEndDate && (
             <Text color="text">
               <ReactMomentCountdown
-                toDate={moment.unix(this.state.auction.availableDate.seconds)}
+                toDate={moment.unix(this.state.auction.auctionEndDate.seconds)}
               />
             </Text>
           )}

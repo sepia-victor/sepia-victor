@@ -4,7 +4,7 @@ import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
 import googleConfig from "../../keys.js";
 import CurrentLocation from "../maps/Map";
 import AddBid from "../bids/AddBid"
-
+import moment from "moment";
 import fireApp from "../../fire";
 import {
   Card,
@@ -32,6 +32,10 @@ import {
   addBidData,
   highestBidData
 } from "../../scripts/Bids.Data";
+
+const vertAlign = {
+  verticalAlign: 'middle'
+}
 
 class AuctionList extends Component {
   constructor() {
@@ -64,20 +68,9 @@ class AuctionList extends Component {
     // let auctionsQuery = fireApp.firestore().collection("auctions");
 
     this.setState({
-      // name: 'Bar',
-      // auctions: await this.getDataArray()
       auctions: await getAuctionsData()
     });
     console.log("-->   ", this.state);
-
-    // await addAuction();
-    // let bidData= await getBidsData('H8ud54fFftYOdZWdgD2v')
-    // let addBid = await addBidData('H8ud54fFftYOdZWdgD2v', 'INAh1ztLO8Y2gpw99MNv0TM2BRV2', 40)
-    // let highBid = await highestBidData('H8ud54fFftYOdZWdgD2v')
-    // let testAuction = await getSingleAuctionData("H8ud54fFftYOdZWdgD2v");
-    // console.log(testAuction);
-
-    // await auctionsQuery.get().then(async snapshot => await snapshot.forEach(doc=> holdArr.push(doc.data()))).then( console.log(holdArr)).catch(err=>console.error(err));
 
     this.unregisterAuthObserver = fireApp.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user });
@@ -85,7 +78,6 @@ class AuctionList extends Component {
   }
 
   handleSeeDetails(singleAuction) {
-    console.log("parameter--->   ", singleAuction);
     this.setState({
       singleAuction,
       currentLocation: {
@@ -103,11 +95,10 @@ class AuctionList extends Component {
     const style = { width: 1000 };
     this.setState({ style });
     document.body.style.backgroundColor = "white";
-    // document.addEventListener("click", this.closeNav);
+
   }
 
   closeNav() {
-    // document.removeEventListener("click", this.closeNav);
     const style = { width: 0 };
     this.setState({ style });
     document.body.style.backgroundColor = "#F3F3F3";
@@ -124,13 +115,15 @@ class AuctionList extends Component {
         <Flex wrap>
           {this.state.auctions.map(auction => (
             <Box key={auction.id} p={3} width={[1 / 2, 1 / 3, 1 / 4]}>
-              {/* <Text.span px={2}>{auction.id}</Text.span> */}
-              <Text px={2}>
+              <Text px={2} style={vertAlign}>
                 <Icon name="CarCircle" color="black" />
                 {auction.location.city}, {auction.location.state}
               </Text>
+              <Text px={2}>Start: {moment.unix(auction.availableStartDate.seconds).format("ddd, h:mm:ss a")}</Text>
+              <Text px={2}>End: {moment.unix(auction.availableEndDate.seconds).format("ddd, h:mm:ss a")}</Text>
               <Text px={2}>Minimum Bid: ${auction.minimumBid}</Text>
               <Text px={2}>Grab Now Bid: ${auction.buyNowBid}</Text>
+              <Text px={2} bold>Ends: {moment.unix(auction.auctionEndDate.seconds).format('ddd, h:mm:ss a')}</Text>
               <Button
                 size="small"
                 onClick={e => this.handleSeeDetails(auction)}
