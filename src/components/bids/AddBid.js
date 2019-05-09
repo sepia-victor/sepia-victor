@@ -3,7 +3,13 @@ import { Flex, Box, FormField, Input, Icon, Text } from "pcln-design-system";
 import { highestBidData } from "../../scripts/Bids.Data";
 import { getSingleAuctionData } from "../../scripts/Auctions.Data";
 import fireApp from "../../fire";
+import moment from "moment";
+import countdown from "countdown";
+import ReactMomentCountdown from "react-moment-countdown";
+require("moment-countdown");
 
+moment().format();
+// console.log( 'moment-->' , moment().format("YYYY") );
 
 class AddBid extends Component {
   constructor(props) {
@@ -20,7 +26,8 @@ class AddBid extends Component {
       user: "",
       userBid: 0,
       highestCurrBid: {},
-      unsub: {}
+      unsub: {},
+      timeleft: 0
     };
   }
 
@@ -34,6 +41,7 @@ class AddBid extends Component {
     this.setState({
       auction: await getSingleAuctionData(this.props.auctionId)
     });
+    console.log(this.state);
   }
 
   onCollectionUpdate = snapshot => {
@@ -58,6 +66,13 @@ class AddBid extends Component {
     return (
       <Flex alignItems="center" flexDirection="column">
         <Box width={1 / 2} p={2} m={2} bg="lightBlue">
+          {this.state.auction.availableDate && (
+            <Text color="text">
+              <ReactMomentCountdown
+                toDate={moment.unix(this.state.auction.availableDate.seconds)}
+              />
+            </Text>
+          )}
           {this.state.highestCurrBid ? (
             <Text color="text">{this.state.highestCurrBid.offer}</Text>
           ) : (
@@ -66,8 +81,14 @@ class AddBid extends Component {
         </Box>
         <Box width={1 / 2} p={2} m={2} bg="lightGreen">
           <FormField>
-            <Icon name="DollarCircle" color='text' size="20" />
-            <Input id="offer" name="offer" placeholder="Place Your Bid Here" />
+            <Icon name="DollarCircle" color="text" size="20" />
+            <Input
+              id="offer"
+              name="offer"
+              color="text"
+              fontSize={1}
+              placeholder="Place Your Bid Here"
+            />
           </FormField>
         </Box>
       </Flex>
