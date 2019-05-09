@@ -1,25 +1,33 @@
-import React, { Component } from 'react';
-import { Flex, Box, FormField, Input, Icon } from 'pcln-design-system';
-import { highestBidData } from '../../scripts/Bids.Data';
-import { getSingleAuctionData } from '../../scripts/Auctions.Data';
-import fireApp from '../../fire';
+import React, { Component } from "react";
+import { Flex, Box, FormField, Input, Icon, Text } from "pcln-design-system";
+import { highestBidData } from "../../scripts/Bids.Data";
+import { getSingleAuctionData } from "../../scripts/Auctions.Data";
+import fireApp from "../../fire";
+import moment from "moment";
+import countdown from "countdown";
+import ReactMomentCountdown from "react-moment-countdown";
+require("moment-countdown");
+
+moment().format();
+// console.log( 'moment-->' , moment().format("YYYY") );
 
 class AddBid extends Component {
   constructor(props) {
     super(props);
     this.ref = fireApp
       .firestore()
-      .collection('auctions')
-      .doc('H8ud54fFftYOdZWdgD2v')
-      .collection('bids')
-      .orderBy('offer', 'desc');
+      .collection("auctions")
+      .doc(this.props.auctionId)
+      .collection("bids")
+      .orderBy("offer", "desc");
     this.unsubscribe = null;
     this.state = {
       auction: {},
-      user: '',
+      user: "",
       userBid: 0,
       highestCurrBid: {},
-      unsub: {}
+      unsub: {},
+      timeleft: 0
     };
   }
 
@@ -29,16 +37,19 @@ class AddBid extends Component {
   //Does: Confirm user is authorized to be on this page
   async componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    console.log(this.unsubscribe);
     this.setState({
-      auction: await getSingleAuctionData('H8ud54fFftYOdZWdgD2v')
+      auction: await getSingleAuctionData(this.props.auctionId)
     });
+    console.log(this.state);
   }
 
   onCollectionUpdate = snapshot => {
+    console.log("onCollectionUpdate");
     const highestCurrArr = [];
     snapshot.forEach((doc, i) => {
       highestCurrArr.push(doc.data());
-      // console.log('current arr', highestCurrArr);
+      console.log("current arr", highestCurrArr);
     });
 
     this.setState({
@@ -55,12 +66,29 @@ class AddBid extends Component {
     return (
       <Flex alignItems="center" flexDirection="column">
         <Box width={1 / 2} p={2} m={2} bg="lightBlue">
-          Highest Current Bid: ${this.state.highestCurrBid.offer}
+          {this.state.auction.auctionEndDate && (
+            <Text color="text">
+              <ReactMomentCountdown
+                toDate={moment.unix(this.state.auction.auctionEndDate.seconds)}
+              />
+            </Text>
+          )}
+          {this.state.highestCurrBid ? (
+            <Text color="text">{this.state.highestCurrBid.offer}</Text>
+          ) : (
+            <Text color="text">{this.state.auction.minimumBid}</Text>
+          )}
         </Box>
         <Box width={1 / 2} p={2} m={2} bg="lightGreen">
           <FormField>
-            <Icon name="DollarCircle" size="20" />
-            <Input id="offer" name="offer" placeholder="Place Your Bid Here" />
+            <Icon name="DollarCircle" color="text" size="20" />
+            <Input
+              id="offer"
+              name="offer"
+              color="text"
+              fontSize={1}
+              placeholder="Place Your Bid Here"
+            />
           </FormField>
         </Box>
       </Flex>
