@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
 import googleConfig from "../../keys.js";
 import CurrentLocation from "../maps/Map";
+import AddBid from "../bids/AddBid"
 
 import fireApp from "../../fire";
 import {
@@ -73,8 +74,8 @@ class AuctionList extends Component {
     // let bidData= await getBidsData('H8ud54fFftYOdZWdgD2v')
     // let addBid = await addBidData('H8ud54fFftYOdZWdgD2v', 'INAh1ztLO8Y2gpw99MNv0TM2BRV2', 40)
     // let highBid = await highestBidData('H8ud54fFftYOdZWdgD2v')
-    let testAuction = await getSingleAuctionData("H8ud54fFftYOdZWdgD2v");
-    console.log(testAuction);
+    // let testAuction = await getSingleAuctionData("H8ud54fFftYOdZWdgD2v");
+    // console.log(testAuction);
 
     // await auctionsQuery.get().then(async snapshot => await snapshot.forEach(doc=> holdArr.push(doc.data()))).then( console.log(holdArr)).catch(err=>console.error(err));
 
@@ -102,11 +103,11 @@ class AuctionList extends Component {
     const style = { width: 1000 };
     this.setState({ style });
     document.body.style.backgroundColor = "white";
-    document.addEventListener("click", this.closeNav);
+    // document.addEventListener("click", this.closeNav);
   }
 
   closeNav() {
-    document.removeEventListener("click", this.closeNav);
+    // document.removeEventListener("click", this.closeNav);
     const style = { width: 0 };
     this.setState({ style });
     document.body.style.backgroundColor = "#F3F3F3";
@@ -167,7 +168,7 @@ class AuctionList extends Component {
                     </Box>
                   )}{" "}
                 </div>
-                <CurrentLocation
+                {/* <CurrentLocation
                   centerAroundCurrentLocation
                   google={this.props.google}
                 >
@@ -183,7 +184,8 @@ class AuctionList extends Component {
                       <h4>{this.state.selectedPlace.name}</h4>
                     </div>
                   </InfoWindow>
-                </CurrentLocation>
+                </CurrentLocation> */}
+                <AddBid auctionId={this.state.singleAuction.id}/>
               </Box>
             </div>
           </Container>
