@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { error } from "util";
+// import { error } from "util";
+import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
+import googleConfig from "../../keys.js";
+import CurrentLocation from "../maps/Map";
 
 import fireApp from "../../fire";
 import {
@@ -9,7 +12,8 @@ import {
   Box,
   Text,
   Flex,
-  Button
+  Button,
+  Container
 } from "pcln-design-system";
 
 import firebase from "firebase";
@@ -21,71 +25,42 @@ import {
   addAuction,
   getSingleAuctionData
 } from "../../scripts/Auctions.Data";
+
 import {
   getBidsData,
   addBidData,
   highestBidData
 } from "../../scripts/Bids.Data";
 
-import AuctionPage from "./AuctionPage";
-
-export default class AuctionList extends Component {
+class AuctionList extends Component {
   constructor() {
     super();
     this.state = {
       name: "Foo",
       auctions: [],
-      singleAuction: {}
+      singleAuction: {},
+      image: "",
+
+      style: {
+        width: 1000
+      },
+      showingInfoWindow: false,
+      activeMarker: {},
+      selectedPlace: {},
+      currentLocation: {
+        lat: null,
+        lng: null
+      },
+
     };
     this.handleSeeDetails = this.handleSeeDetails.bind(this);
-  }
-
-  //DateConversion
-  //Receives: a date
-  // Does: converts date to seconds
-  // Return: Seconds integer
-
-  // async getDataArray(){
-  //   let auctionsQuery = fireApp.firestore().collection("auctions");
-  //   try {
-  //       let holdArr = []
-  //       let snapshot = await auctionsQuery.get();
-  //       await snapshot.forEach(async doc => {
-  //         await holdArr.push(doc.data());
-  //       });
-  //       return await holdArr
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  // }
-
-  async componentDidUpdate() {
-    // console.log(this.getDataArray())
-    // this.setState({
-    //   name: 'Bar',
-    //   auctions: await this.getDataArray()
-    // });
+    this.openNav = this.openNav.bind(this);
+    this.closeNav = this.closeNav.bind(this);
   }
 
   async componentDidMount() {
-    let holdArr = [1, 3, 4];
-    let auctionsQuery = fireApp.firestore().collection("auctions");
-    // auctionsQuery.get().then(snapshot => { snapshot.forEach(doc => console.log(doc.data()))});
-    // try {
-    //   let snapshot = auctionsQuery.get
-    // } catch (error) {
-    //   console.error(error)
-    // }
-    // try {
-    //   let snapshot = await auctionsQuery.get();
-    //   snapshot.forEach(doc => {
-    //     holdArr.push(doc.data());
-    //   });
-    //   console.log("---->", holdArr);
-
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    // let holdArr = [1, 3, 4];
+    // let auctionsQuery = fireApp.firestore().collection("auctions");
 
     this.setState({
       // name: 'Bar',
@@ -111,7 +86,32 @@ export default class AuctionList extends Component {
   handleSeeDetails(singleAuction) {
     console.log("parameter--->   ", singleAuction);
     this.setState({
-      singleAuction
+      singleAuction,
+      currentLocation: {
+        lat: singleAuction.location.geoPosition._lat,
+        lng: singleAuction.location.geoPosition._lng
+      },
+    });
+    this.openNav();
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("click", this.closeNav);
+  }
+  openNav() {
+    const style = { width: 1000 };
+    this.setState({ style });
+    document.body.style.backgroundColor = "white";
+    document.addEventListener("click", this.closeNav);
+  }
+
+  closeNav() {
+    document.removeEventListener("click", this.closeNav);
+    const style = { width: 0 };
+    this.setState({ style });
+    document.body.style.backgroundColor = "#F3F3F3";
+    this.setState({
+      singleAuction: {}
     });
   }
 
@@ -141,14 +141,58 @@ export default class AuctionList extends Component {
         </Flex>
 
         {this.state.singleAuction.id && (
-          <Box key={this.state.singleAuction.id} p={3}>
-            <Text px={2}>
-              {this.state.singleAuction.location.city},{" "}
-              {this.state.singleAuction.location.state}
-            </Text>
-          </Box>
+          <Container maxWidth={1000}>
+            <div ref="snav" className="overlay" style={this.state.style}>
+              <Box color="white" bg="light-blue">
+                <div className="text-center">
+                  <a
+                    href="javascript:void(0)"
+                    className="closebtn"
+                    onClick={this.closeNav}
+                  >
+                    <Icon name="close" color="white" />
+                  </a>
+                  {this.state.singleAuction.id && (
+                    <Box key={this.state.singleAuction.id} p={3}>
+                      <Text px={2}>
+                        {this.state.singleAuction.location.city},{" "}
+                        {this.state.singleAuction.location.state}
+                      </Text>
+                      <Text px={2}>
+                        Minimum Bid: ${this.state.singleAuction.minimumBid}
+                      </Text>
+                      <Text px={2}>
+                        Grab Now Bid: ${this.state.singleAuction.buyNowBid}
+                      </Text>
+                    </Box>
+                  )}{" "}
+                </div>
+                <CurrentLocation
+                  centerAroundCurrentLocation
+                  google={this.props.google}
+                >
+                  <Marker
+                    name={"current location"}
+                  />
+                  <InfoWindow
+                    marker={this.state.activeMarker}
+                    visible={this.state.showingInfoWindow}
+                    onClose={this.onClose}
+                  >
+                    <div>
+                      <h4>{this.state.selectedPlace.name}</h4>
+                    </div>
+                  </InfoWindow>
+                </CurrentLocation>
+              </Box>
+            </div>
+          </Container>
         )}
       </div>
     );
   }
 }
+
+export default GoogleApiWrapper({
+  apiKey: googleConfig.GOOGLE_API_KEY
+})(AuctionList);
