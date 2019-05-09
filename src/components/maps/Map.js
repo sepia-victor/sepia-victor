@@ -22,7 +22,8 @@ export class CurrentLocation extends React.Component {
         lng: lng
       },
       currAuctions: [],
-      redirect: false
+      redirect: false,
+      markerId: 0
     };
 
     this.routeChange = this.routeChange.bind(this);
@@ -134,6 +135,10 @@ export class CurrentLocation extends React.Component {
             }
           });
           marker.addListener('click', this.routeChange);
+
+          if (this.state.markerId === marker.id) {
+            this.map.setCenter({ lat: markerLat, lng: markerLng });
+          }
         }
       }
     }
