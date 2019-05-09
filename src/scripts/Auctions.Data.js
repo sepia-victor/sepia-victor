@@ -1,5 +1,6 @@
 import fireApp from "../fire";
 import firebase from "firebase";
+import fire from "../fire";
 
 // Add Auction
 // Receive: Auction Data {Location: Geolocation, UserId, etc}
@@ -9,9 +10,13 @@ import firebase from "firebase";
 const addAuction = async (newAuctionData) => {
   let addAuctionQuery = fireApp.firestore().collection("auctions");
   try {
-    let newAuction = await addAuctionQuery.add({
+    let newAuction = null
+    if (newAuctionData){
+      newAuction = await addAuctionQuery.add(newAuctionData)
+    }else{
+    newAuction = await addAuctionQuery.add({
       availableStartDate: new firebase.firestore.Timestamp(0,0),
-      availableEndDate: new firebase.firestore.Timestamp(1000, 0),
+      availableEndDate: new firebase.firestore.Timestamp(0, 0),
       startDate: 0,
       endDate: 1000,
       minimumBid: 50,
@@ -22,9 +27,9 @@ const addAuction = async (newAuctionData) => {
         state: "NY",
         geoPosition: new firebase.firestore.GeoPoint( 1.345 , 3.456 ),
       },
-
-
+      live: true
     });
+    }
     console.log( 'doc written' , newAuction);
   } catch (error) {
     console.log(error);
@@ -46,7 +51,7 @@ const addAuction = async (newAuctionData) => {
 // Does: Gets all the auctions currently available from the Firestore database where the action's Live boolean is true
 // Returns: An array of objects containing the Id of an Auction and the data of said auction
 const getAuctionsData = async () => {
-  let auctionsQuery = fireApp.firestore().collection("auctions");
+  let auctionsQuery = fireApp.firestore().collection("auctions").where('live','==',true);
   try {
     let auctionsArray = [];
     let snapshot = await auctionsQuery.get();
