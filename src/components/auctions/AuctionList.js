@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
 import googleConfig from "../../keys.js";
 import CurrentLocation from "../maps/Map";
-import AddBid from "../bids/AddBid"
+import AddBid from "../bids/AddBid";
 import moment from "moment";
 import fireApp from "../../fire";
 import {
@@ -14,7 +14,11 @@ import {
   Text,
   Flex,
   Button,
-  Container
+  OutlineButton,
+  Container,
+  Flag,
+  Banner,
+  Divider
 } from "pcln-design-system";
 
 import firebase from "firebase";
@@ -34,8 +38,8 @@ import {
 } from "../../scripts/Bids.Data";
 
 const vertAlign = {
-  verticalAlign: 'middle'
-}
+  verticalAlign: "middle"
+};
 
 class AuctionList extends Component {
   constructor() {
@@ -55,8 +59,7 @@ class AuctionList extends Component {
       currentLocation: {
         lat: null,
         lng: null
-      },
-
+      }
     };
     this.handleSeeDetails = this.handleSeeDetails.bind(this);
     this.openNav = this.openNav.bind(this);
@@ -83,7 +86,7 @@ class AuctionList extends Component {
       currentLocation: {
         lat: singleAuction.location.geoPosition._lat,
         lng: singleAuction.location.geoPosition._lng
-      },
+      }
     });
     this.openNav();
   }
@@ -95,7 +98,6 @@ class AuctionList extends Component {
     const style = { width: 1000 };
     this.setState({ style });
     document.body.style.backgroundColor = "white";
-
   }
 
   closeNav() {
@@ -112,24 +114,56 @@ class AuctionList extends Component {
       <div>
         <Heading m={3}>Auctions</Heading>
         <hr />
-        <Flex wrap>
+        <Flex wrap justifyContent="center">
           {this.state.auctions.map(auction => (
-            <Box key={auction.id} p={3} width={[1 / 2, 1 / 3, 1 / 4]}>
-              <Text px={2} style={vertAlign}>
-                <Icon name="CarCircle" color="black" />
-                {auction.location.city}, {auction.location.state}
-              </Text>
-              <Text px={2}>Start: {moment.unix(auction.availableStartDate.seconds).format("ddd, h:mm:ss a")}</Text>
-              <Text px={2}>End: {moment.unix(auction.availableEndDate.seconds).format("ddd, h:mm:ss a")}</Text>
-              <Text px={2}>Minimum Bid: ${auction.minimumBid}</Text>
-              <Text px={2}>Grab Now Bid: ${auction.buyNowBid}</Text>
-              <Text px={2} bold>Ends: {moment.unix(auction.auctionEndDate.seconds).format('ddd, h:mm:ss a')}</Text>
-              <Button
-                size="small"
-                onClick={e => this.handleSeeDetails(auction)}
+            <Box key={auction.id} m={3} width={[1, 1/2, 1/4]}>
+              <Card
+                boxShadowSize="xl"
+                borderWidth={1}
+                bg="lightBlue"
+                borderRadius={20}
+                p={2}
               >
-                See Details
-              </Button>
+                <Banner showIcon={false} bg="lightBlue" p={2}>
+                  <Flex>
+                    <Icon name="CarCircle" />
+                    <Box pl={2}>
+                      <Heading fontSize={2} bold>
+                        {auction.location.city}, {auction.location.state}
+                      </Heading>
+                      <Divider />
+                      <Text>
+                        Start:{" "}
+                        {moment
+                          .unix(auction.availableStartDate.seconds)
+                          .format("ddd, h:mm:ss a")}
+                      </Text>
+                      <Text>
+                        End:{" "}
+                        {moment
+                          .unix(auction.availableEndDate.seconds)
+                          .format("ddd, h:mm:ss a")}
+                      </Text>
+                      <Divider />
+                      <Text>Minimum Bid: ${auction.minimumBid}</Text>
+                      <Text>Grab Now Bid: ${auction.buyNowBid}</Text>
+                      <Divider />
+                      <Text bold>
+                        Ends:{" "}
+                        {moment
+                          .unix(auction.auctionEndDate.seconds)
+                          .format("ddd, h:mm:ss a")}
+                      </Text>
+                      <OutlineButton
+                        size="small"
+                        onClick={e => this.handleSeeDetails(auction)}
+                      >
+                        See Details
+                      </OutlineButton>
+                    </Box>
+                  </Flex>
+                </Banner>
+              </Card>
             </Box>
           ))}
         </Flex>
@@ -161,24 +195,7 @@ class AuctionList extends Component {
                     </Box>
                   )}{" "}
                 </div>
-                {/* <CurrentLocation
-                  centerAroundCurrentLocation
-                  google={this.props.google}
-                >
-                  <Marker
-                    name={"current location"}
-                  />
-                  <InfoWindow
-                    marker={this.state.activeMarker}
-                    visible={this.state.showingInfoWindow}
-                    onClose={this.onClose}
-                  >
-                    <div>
-                      <h4>{this.state.selectedPlace.name}</h4>
-                    </div>
-                  </InfoWindow>
-                </CurrentLocation> */}
-                <AddBid auctionId={this.state.singleAuction.id}/>
+                <AddBid auctionId={this.state.singleAuction.id} />
               </Box>
             </div>
           </Container>
