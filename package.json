@@ -10,6 +10,7 @@
     "google-maps-react": "^2.0.2",
     "moment": "^2.24.0",
     "moment-countdown": "0.0.3",
+    "node-firestore-import-export": "^0.13.2",
     "pcln-design-system": "^2.0.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

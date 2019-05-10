@@ -79,7 +79,16 @@ class AddBid extends Component {
             <Text color="text">{this.state.auction.minimumBid}</Text>
           )}
         </Box>
-        <Box width={1 / 2} p={2} m={2} bg="lightGreen">
+        <Box
+          width={[
+            1, // Sets width 100% at the smallest breakpoint
+            1 / 2, // Sets width 50% at the next breakpoint
+            1 / 4 // Sets width 25% at the next breakpoint
+          ]}
+          p={2}
+          m={2}
+          bg="lightGreen"
+        >
           <FormField>
             <Icon name="DollarCircle" color="text" size="20" />
             <Input
