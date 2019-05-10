@@ -41,7 +41,12 @@ const addBidData = async (auctionId, userId, userBid) => {
       userId: userId,
       offer: userBid
     };
-    let bidAdd = await bidsQuery.collection('bids').add(bidObj);
+    let auction = await bidsQuery.get()
+    let bidAdd = null
+    if (auction.data().live){
+      bidAdd = await bidsQuery.collection('bids').add(bidObj)
+    };
+
     return await bidAdd;
   } catch (error) {
     console.error(error);
