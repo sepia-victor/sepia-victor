@@ -29,6 +29,8 @@ class AddBid extends Component {
       unsub: {},
       timeleft: 0
     };
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   // ComponentDidMount will get current highest bid in the specific auction
@@ -42,6 +44,7 @@ class AddBid extends Component {
       auction: await getSingleAuctionData(this.props.auctionId)
     });
     console.log(this.state);
+
   }
 
   onCollectionUpdate = snapshot => {
@@ -62,10 +65,27 @@ class AddBid extends Component {
     this.unsubscribe();
   }
 
+  //Handle Change
+  //Receives: event
+  //Does: Checks given event, and sets the UserBid based upon that event. If the event is invalid, inform user.
+  //Return: setState {userbid}
+  handleChange(event){
+    event.preventDefault();
+
+  }
+
+  //Handle Submit
+  //Receives: event
+  //Does: Prevent event's default function, submits the userId, the auctionId, and this state's userBid
+  //Return: Submits Document to Firestore, Succcess/Failure
+  handleSubmit(event){
+    event.preventDefault()
+  }
+
   render() {
     return (
       <Flex alignItems="center" flexDirection="column">
-        <Box width={1 / 2} p={2} m={2} bg="lightBlue">
+        <Box width={[1, 1, 1]} p={2} m={2} bg="lightBlue">
           {this.state.auction.auctionEndDate && (
             <Text color="text">
               <ReactMomentCountdown
