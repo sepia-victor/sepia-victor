@@ -43,14 +43,12 @@ import {
 // };
 
 const OverLayContainer = styled(Container)`
-  /* height: 0%; */
-  /* width: 0%; */
+  height: "5em";
+  width: 80%;
   position: fixed;
   z-index: 5;
-  top: 20%;
-  /* margin: 0 auto; */
-  /* background-color:rgb(0,0,255); */
-  /* background-color: rgba(128, 128, 128,.75); */
+  top: 35%;
+  left: 10%;
   transition: 0.5s;
 `;
 
@@ -178,31 +176,28 @@ class AuctionList extends Component {
         </Flex>
 
         {this.state.singleAuction.id && (
-              <OverLayContainer>
-
-                <Box bg="lightGray" color="text">
-                    <a
-                      href="javascript:void(0)"
-                      onClick={this.closeNav}
-                    >
-                      <Icon name="Close" color="red" />
-                    </a>
-                      <Box key={this.state.singleAuction.id}>
-                        <Text px={2}>
-                          {this.state.singleAuction.location.city},{" "}
-                          {this.state.singleAuction.location.state}
-                        </Text>
-                        <Text px={2}>
-                          Minimum Bid: ${this.state.singleAuction.minimumBid}
-                        </Text>
-                        <Text px={2}>
-                          Grab Now Bid: ${this.state.singleAuction.buyNowBid}
-                        </Text>
-                      </Box>
-                  <AddBid auctionId={this.state.singleAuction.id} />
-                </Box>
-
-                </OverLayContainer>
+          <OverLayContainer>
+            <Flex>
+            <Box bg="lightGray" color="text">
+              <a href="javascript:void(0)" onClick={this.closeNav}>
+                <Icon name="Close" color="red" />
+              </a>
+              <Box px={3} width={1 / 4} key={this.state.singleAuction.id}>
+                <Text px={2}>
+                  {this.state.singleAuction.location.city},{" "}
+                  {this.state.singleAuction.location.state}
+                </Text>
+                <Text px={2}>
+                  Minimum Bid: ${this.state.singleAuction.minimumBid}
+                </Text>
+                <Text px={2}>
+                  Grab Now Bid: ${this.state.singleAuction.buyNowBid}
+                </Text>
+              </Box>
+              <AddBid auctionId={this.state.singleAuction.id} />
+            </Box>
+            </Flex>
+          </OverLayContainer>
         )}
       </div>
     );
@@ -212,3 +207,5 @@ class AuctionList extends Component {
 export default GoogleApiWrapper({
   apiKey: googleConfig.GOOGLE_API_KEY
 })(AuctionList);
+
+
