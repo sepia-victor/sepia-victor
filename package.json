@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "countdown": "^2.6.0",
+    "eslint-config-react-app": "^4.0.1",
     "firebase": "^5.11.0",
     "firebase-cli": "^1.2.0",
     "firebase-tools": "^6.7.2",
@@ -42,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^2.17.2"
   }
 }

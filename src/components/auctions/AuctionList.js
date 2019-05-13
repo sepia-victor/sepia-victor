@@ -2,10 +2,11 @@ import React, { Component } from "react";
 // import { error } from "util";
 import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
 import googleConfig from "../../keys.js";
-import CurrentLocation from "../maps/Map";
+// import CurrentLocation from "../maps/Map";
 import AddBid from "../bids/AddBid";
 import moment from "moment";
 import fireApp from "../../fire";
+import styled from "styled-components";
 import {
   Card,
   Heading,
@@ -21,7 +22,7 @@ import {
   Divider
 } from "pcln-design-system";
 
-import firebase from "firebase";
+// import firebase from "firebase";
 
 import { Link } from "react-router-dom";
 
@@ -31,15 +32,27 @@ import {
   getSingleAuctionData
 } from "../../scripts/Auctions.Data";
 
-import {
-  getBidsData,
-  addBidData,
-  highestBidData
-} from "../../scripts/Bids.Data";
+// import {
+//   getBidsData,
+//   addBidData,
+//   highestBidData
+// } from "../../scripts/Bids.Data";
 
-const vertAlign = {
-  verticalAlign: "middle"
-};
+// const vertAlign = {
+//   verticalAlign: "middle"
+// };
+
+const OverLayContainer = styled(Container)`
+  /* height: 0%; */
+  /* width: 0%; */
+  position: fixed;
+  z-index: 5;
+  top: 20%;
+  /* margin: 0 auto; */
+  /* background-color:rgb(0,0,255); */
+  /* background-color: rgba(128, 128, 128,.75); */
+  transition: 0.5s;
+`;
 
 class AuctionList extends Component {
   constructor() {
@@ -49,11 +62,6 @@ class AuctionList extends Component {
       auctions: [],
       singleAuction: {},
       image: "",
-
-      style: {
-        width: '80%',
-        paddingLeft: '10%'
-      },
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
@@ -96,15 +104,15 @@ class AuctionList extends Component {
     document.removeEventListener("click", this.closeNav);
   }
   openNav() {
-    const style = { width: '80%' };
-    this.setState({ style });
-    document.body.style.backgroundColor = "white";
+    // const style = { width: "80%" };
+    // this.setState({ style });
+    document.body.style.backgroundColor = "#F3F3F3";
   }
 
   closeNav() {
-    const style = { width: 0 };
-    this.setState({ style });
-    document.body.style.backgroundColor = "#F3F3F3";
+    // const style = { width: 0 };
+    // this.setState({ style });
+    document.body.style.backgroundColor = "white";
     this.setState({
       singleAuction: {}
     });
@@ -117,7 +125,7 @@ class AuctionList extends Component {
         <hr />
         <Flex wrap justifyContent="center">
           {this.state.auctions.map(auction => (
-            <Box key={auction.id} m={3} width={[1, 1, 1/2, 1/4]}>
+            <Box key={auction.id} m={3} width={[1, 1 / 2, 1 / 2, 1 / 3, 1 / 4]}>
               <Card
                 boxShadowSize="xl"
                 borderWidth={1}
@@ -170,38 +178,31 @@ class AuctionList extends Component {
         </Flex>
 
         {this.state.singleAuction.id && (
-          <Container maxWidth={1000}>
-              <Box color="text" bg="light-blue">
-            <div className="overlay" style={this.state.style}>
-              <Box color="text" bg="light-blue">
-                <div className="text-center">
-                  <a
-                    href="javascript:void(0)"
-                    className="closebtn"
-                    onClick={this.closeNav}
-                  >
-                    <Icon name="Close" color="white" />
-                  </a>
-                  {this.state.singleAuction.id && (
-                    <Box key={this.state.singleAuction.id} p={3}>
-                      <Text px={2}>
-                        {this.state.singleAuction.location.city},{" "}
-                        {this.state.singleAuction.location.state}
-                      </Text>
-                      <Text px={2}>
-                        Minimum Bid: ${this.state.singleAuction.minimumBid}
-                      </Text>
-                      <Text px={2}>
-                        Grab Now Bid: ${this.state.singleAuction.buyNowBid}
-                      </Text>
-                    </Box>
-                  )}{" "}
-                </div>
-                <AddBid auctionId={this.state.singleAuction.id} />
-              </Box>
-            </div>
-            </Box>
-          </Container>
+              <OverLayContainer>
+
+                <Box bg="lightGray" color="text">
+                    <a
+                      href="javascript:void(0)"
+                      onClick={this.closeNav}
+                    >
+                      <Icon name="Close" color="red" />
+                    </a>
+                      <Box key={this.state.singleAuction.id}>
+                        <Text px={2}>
+                          {this.state.singleAuction.location.city},{" "}
+                          {this.state.singleAuction.location.state}
+                        </Text>
+                        <Text px={2}>
+                          Minimum Bid: ${this.state.singleAuction.minimumBid}
+                        </Text>
+                        <Text px={2}>
+                          Grab Now Bid: ${this.state.singleAuction.buyNowBid}
+                        </Text>
+                      </Box>
+                  <AddBid auctionId={this.state.singleAuction.id} />
+                </Box>
+
+                </OverLayContainer>
         )}
       </div>
     );

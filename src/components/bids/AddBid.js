@@ -131,60 +131,50 @@ class AddBid extends Component {
   }
 
   render() {
-
     let minBid = this.state.highestCurrBid
-    ? this.state.highestCurrBid.offer
-    : this.state.auction.minimumBid;
+      ? this.state.highestCurrBid.offer
+      : this.state.auction.minimumBid;
 
     return (
-      <Flex alignItems="center" flexDirection="column">
-        <Box width={[1, 1, 1]} p={2} m={2} bg="lightBlue">
-          {this.state.auction.auctionEndDate && (
-            <Text color="text">
-              <ReactMomentCountdown
-                toDate={moment.unix(this.state.auction.auctionEndDate.seconds)}
-              />
-            </Text>
-          )}
-          {this.state.highestCurrBid ? (
-            <Text color="text">{this.state.highestCurrBid.offer}</Text>
-          ) : (
-            <Text color="text">{this.state.auction.minimumBid}</Text>
-          )}
-        </Box>
-        <Box
-          width={[
-            1, // Sets width 100% at the smallest breakpoint
-            1 / 2, // Sets width 50% at the next breakpoint
-            1 / 4 // Sets width 25% at the next breakpoint
-          ]}
-          p={2}
-          m={2}
-          bg="lightGreen"
-        >
-          <FormField>
-            <Icon name="DollarCircle" color="text" size="20" />
-            <Input
-              id="offer"
-              name="offer"
-              placeholder="Place Your Bid Here"
-              onChange={this.handleChange}
-              type="number"
-              defaultValue={minBid}
+      <Box>
+        {this.state.auction.auctionEndDate && (
+          <Text px={2} color="text">
+            <ReactMomentCountdown
+              toDate={moment.unix(this.state.auction.auctionEndDate.seconds)}
             />
-          </FormField>
-          {this.state.bidFlag ? (
-            <Tooltip bottom right color="white" bg="red">
-              There is a higher bid.
-            </Tooltip>
-          ) : null}
-          <div>
-            <RedButton size="medium" mr={2} onClick={this.handleSubmit}>
-              Submit
-            </RedButton>
-          </div>
-        </Box>
-      </Flex>
+          </Text>
+        )}
+        {this.state.highestCurrBid ? (
+          <Text px={2} color="text">
+            {this.state.highestCurrBid.offer}
+          </Text>
+        ) : (
+          <Text px={2} color="text">
+            {this.state.auction.minimumBid}
+          </Text>
+        )}
+        <FormField>
+          <Icon name="DollarCircle" color="text" size="20" />
+          <Input
+            p={2}
+            id="offer"
+            name="offer"
+            placeholder="Place Your Bid Here"
+            onChange={this.handleChange}
+            type="number"
+            defaultValue={minBid}
+            size="20"
+          />
+        </FormField>
+        {this.state.bidFlag ? (
+          <Tooltip bottom right color="white" bg="red">
+            There is a higher bid.
+          </Tooltip>
+        ) : null}
+        <RedButton size="medium" m={3} onClick={this.handleSubmit}>
+          Submit
+        </RedButton>
+      </Box>
     );
   }
 }
