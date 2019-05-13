@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 // import { error } from "util";
-import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
-import googleConfig from "../../keys.js";
-// import CurrentLocation from "../maps/Map";
-import AddBid from "../bids/AddBid";
-import moment from "moment";
-import fireApp from "../../fire";
-import styled from "styled-components";
+import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
+import googleConfig from '../../keys.js';
+import AddBid from '../bids/AddBid';
+import moment from 'moment';
+import fireApp from '../../fire';
+import styled from 'styled-components';
 import {
   Card,
   Heading,
@@ -20,17 +19,17 @@ import {
   Flag,
   Banner,
   Divider
-} from "pcln-design-system";
+} from 'pcln-design-system';
 
 // import firebase from "firebase";
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import {
   getAuctionsData,
   addAuction,
   getSingleAuctionData
-} from "../../scripts/Auctions.Data";
+} from '../../scripts/Auctions.Data';
 
 // import {
 //   getBidsData,
@@ -55,47 +54,61 @@ const OverLayContainer = styled(Container)`
 `;
 
 class AuctionList extends Component {
-  constructor() {
-    super();
-    this.ref = fireApp.firestore().collection("auctions").where('live','==',true)
+  constructor(props) {
+    super(props);
+    this.ref = fireApp
+      .firestore()
+      .collection('auctions')
+      .where('live', '==', true);
     this.state = {
-      name: "Foo",
+      name: 'Foo',
       auctions: [],
       singleAuction: {},
-      image: "",
+      image: '',
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
       currentLocation: {
         lat: null,
         lng: null
-      }
+      },
+      nearbyLocationIds: this.props.location.state.nearbyLocationIds
     };
     this.handleSeeDetails = this.handleSeeDetails.bind(this);
     this.openNav = this.openNav.bind(this);
     this.closeNav = this.closeNav.bind(this);
-    this.onCollectionUpdate.bind(this)
+    this.onCollectionUpdate.bind(this);
   }
 
-  onCollectionUpdate = snapshot =>{
-    console.log("onAuctionCollectionUpdate");    const auctionList = [];
-    snapshot.forEach((doc, i)=>{
+  onCollectionUpdate = snapshot => {
+    console.log('onAuctionCollectionUpdate');
+    let auctionList = [];
+    snapshot.forEach((doc, i) => {
       let data = doc.data();
-      data.id  = doc.id
+      data.id = doc.id;
       auctionList.push(data);
-    })
+    });
+
+    if (this.state.nearbyLocationIds.length > 0) {
+      auctionList = auctionList.filter(data => {
+        return this.state.nearbyLocationIds.includes(data.id);
+      });
+      console.log('filtered--->    ', auctionList);
+    }
 
     this.setState({
       auctions: auctionList
-    })
-  }
+    });
+  };
 
   async componentDidMount() {
     // let holdArr = [1, 3, 4];
     // let auctionsQuery = fireApp.firestore().collection("auctions");
+    // console.log('nearbyLocationIds>>>>> ', this.state.nearbyLocationIds);
+
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
-    console.log(this.unsubscribe)
-    console.log("-->   ", this.state);
+
+    console.log('-->   ', this.state);
 
     this.unregisterAuthObserver = fireApp.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user });
@@ -114,18 +127,18 @@ class AuctionList extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener("click", this.closeNav);
+    document.removeEventListener('click', this.closeNav);
   }
   openNav() {
     // const style = { width: "80%" };
     // this.setState({ style });
-    document.body.style.backgroundColor = "#F3F3F3";
+    document.body.style.backgroundColor = '#F3F3F3';
   }
 
   closeNav() {
     // const style = { width: 0 };
     // this.setState({ style });
-    document.body.style.backgroundColor = "white";
+    document.body.style.backgroundColor = 'white';
     this.setState({
       singleAuction: {}
     });
@@ -155,26 +168,26 @@ class AuctionList extends Component {
                       </Heading>
                       <Divider />
                       <Text>
-                        Start:{" "}
+                        Start:{' '}
                         {moment
                           .unix(auction.availableStartDate.seconds)
-                          .format("ddd, h:mm:ss a")}
+                          .format('ddd, h:mm:ss a')}
                       </Text>
                       <Text>
-                        End:{" "}
+                        End:{' '}
                         {moment
                           .unix(auction.availableEndDate.seconds)
-                          .format("ddd, h:mm:ss a")}
+                          .format('ddd, h:mm:ss a')}
                       </Text>
                       <Divider />
                       <Text>Minimum Bid: ${auction.minimumBid}</Text>
                       <Text>Grab Now Bid: ${auction.buyNowBid}</Text>
                       <Divider />
                       <Text bold color="red">
-                        Ends:{" "}
+                        Ends:{' '}
                         {moment
                           .unix(auction.auctionEndDate.seconds)
-                          .format("ddd, h:mm:ss a")}
+                          .format('ddd, h:mm:ss a')}
                       </Text>
                       <OutlineButton
                         size="small"
@@ -191,31 +204,26 @@ class AuctionList extends Component {
         </Flex>
 
         {this.state.singleAuction.id && (
-              <OverLayContainer>
-
-                <Box bg="lightGray" color="text">
-                    <a
-                      href="javascript:void(0)"
-                      onClick={this.closeNav}
-                    >
-                      <Icon name="Close" color="red" />
-                    </a>
-                      <Box key={this.state.singleAuction.id}>
-                        <Text px={2}>
-                          {this.state.singleAuction.location.city},{" "}
-                          {this.state.singleAuction.location.state}
-                        </Text>
-                        <Text px={2}>
-                          Minimum Bid: ${this.state.singleAuction.minimumBid}
-                        </Text>
-                        <Text px={2}>
-                          Grab Now Bid: ${this.state.singleAuction.buyNowBid}
-                        </Text>
-                      </Box>
-                  <AddBid auctionId={this.state.singleAuction.id} />
-                </Box>
-
-                </OverLayContainer>
+          <OverLayContainer>
+            <Box bg="lightGray" color="text">
+              <a href="javascript:void(0)" onClick={this.closeNav}>
+                <Icon name="Close" color="red" />
+              </a>
+              <Box key={this.state.singleAuction.id}>
+                <Text px={2}>
+                  {this.state.singleAuction.location.city},{' '}
+                  {this.state.singleAuction.location.state}
+                </Text>
+                <Text px={2}>
+                  Minimum Bid: ${this.state.singleAuction.minimumBid}
+                </Text>
+                <Text px={2}>
+                  Grab Now Bid: ${this.state.singleAuction.buyNowBid}
+                </Text>
+              </Box>
+              <AddBid auctionId={this.state.singleAuction.id} />
+            </Box>
+          </OverLayContainer>
         )}
       </div>
     );
