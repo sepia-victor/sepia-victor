@@ -11,6 +11,8 @@ const mapStyles = {
   }
 };
 
+const nearbyLocations = [];
+
 export class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
@@ -139,6 +141,9 @@ export class CurrentLocation extends React.Component {
           if (this.state.markerId === marker.id) {
             this.map.setCenter({ lat: markerLat, lng: markerLng });
           }
+
+          nearbyLocations.push(marker.id);
+          console.log('nearbyLocations===> ', nearbyLocations);
         }
       }
     }
@@ -161,9 +166,15 @@ export class CurrentLocation extends React.Component {
 
   render() {
     const style = Object.assign({}, mapStyles.map);
-
+    console.log('nearbyLocations--->  ', nearbyLocations);
     if (this.state.redirect) {
-      return <Redirect push to="/auctions" />;
+      return (
+        <div>
+          {nearbyLocations.length > 0 && (
+            <Redirect push to="/auctions" nearbyLocations={nearbyLocations} />
+          )}
+        </div>
+      );
     } else {
       return (
         <div>
