@@ -11,7 +11,7 @@ const mapStyles = {
   }
 };
 
-const nearbyLocations = [];
+const nearbyLocationIds = [];
 
 export class CurrentLocation extends React.Component {
   constructor(props) {
@@ -142,8 +142,8 @@ export class CurrentLocation extends React.Component {
             this.map.setCenter({ lat: markerLat, lng: markerLng });
           }
 
-          nearbyLocations.push(marker.id);
-          console.log('nearbyLocations===> ', nearbyLocations);
+          nearbyLocationIds.push(marker.id);
+          console.log('nearbyLocationIds===> ', nearbyLocationIds);
         }
       }
     }
@@ -166,12 +166,18 @@ export class CurrentLocation extends React.Component {
 
   render() {
     const style = Object.assign({}, mapStyles.map);
-    console.log('nearbyLocations--->  ', nearbyLocations);
+    console.log('nearbyLocationIds--->  ', nearbyLocationIds);
     if (this.state.redirect) {
       return (
         <div>
-          {nearbyLocations.length > 0 && (
-            <Redirect push to="/auctions" nearbyLocations={nearbyLocations} />
+          {nearbyLocationIds.length > 0 && (
+            <Redirect
+              push
+              to={{
+                pathname: '/auctions',
+                state: { nearbyLocationIds: nearbyLocationIds }
+              }}
+            />
           )}
         </div>
       );

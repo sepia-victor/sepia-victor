@@ -54,9 +54,15 @@ const OverLayContainer = styled(Container)`
 `;
 
 class AuctionList extends Component {
+<<<<<<< HEAD
   constructor(props) {
     super(props);
     console.log('this.props/////> ', this.props);
+=======
+  constructor() {
+    super();
+    this.ref = fireApp.firestore().collection("auctions").where('live','==',true)
+>>>>>>> master
     this.state = {
       name: 'Foo',
       auctions: [],
@@ -74,11 +80,26 @@ class AuctionList extends Component {
     this.handleSeeDetails = this.handleSeeDetails.bind(this);
     this.openNav = this.openNav.bind(this);
     this.closeNav = this.closeNav.bind(this);
+    this.onCollectionUpdate.bind(this)
+  }
+
+  onCollectionUpdate = snapshot =>{
+    console.log("onAuctionCollectionUpdate");    const auctionList = [];
+    snapshot.forEach((doc, i)=>{
+      let data = doc.data();
+      data.id  = doc.id
+      auctionList.push(data);
+    })
+
+    this.setState({
+      auctions: auctionList
+    })
   }
 
   async componentDidMount() {
     // let holdArr = [1, 3, 4];
     // let auctionsQuery = fireApp.firestore().collection("auctions");
+<<<<<<< HEAD
 
     console.log('nearbyLocationIds--->  ', this.state.nearbyLocationIds);
     let auctionData;
@@ -92,6 +113,11 @@ class AuctionList extends Component {
       auctions: auctionData
     });
     console.log('this.state.auctions--->  ', this.state.auctions);
+=======
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    console.log(this.unsubscribe)
+    console.log("-->   ", this.state);
+>>>>>>> master
 
     this.unregisterAuthObserver = fireApp.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user });
