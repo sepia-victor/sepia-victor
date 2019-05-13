@@ -87,7 +87,7 @@ class AddBid extends Component {
       : this.state.auction.minimumBid;
     event.preventDefault();
     console.log(event.target.value);
-    if (Number(event.target.value) < minBid) {
+    if (Number(event.target.value) <= minBid) {
       this.setState({
         bidFlag: true
       });
@@ -120,7 +120,7 @@ class AddBid extends Component {
           console.log(success);
         } else {
           this.setState({
-            message: "Needs a higher bid",
+            message: "Needs a higher bid.",
             errorFlag: true
           });
         }
@@ -131,6 +131,11 @@ class AddBid extends Component {
   }
 
   render() {
+
+    let minBid = this.state.highestCurrBid
+    ? this.state.highestCurrBid.offer
+    : this.state.auction.minimumBid;
+
     return (
       <Flex alignItems="center" flexDirection="column">
         <Box width={[1, 1, 1]} p={2} m={2} bg="lightBlue">
@@ -162,16 +167,15 @@ class AddBid extends Component {
             <Input
               id="offer"
               name="offer"
-              color="text"
-              fontSize={1}
               placeholder="Place Your Bid Here"
               onChange={this.handleChange}
               type="number"
+              defaultValue={minBid}
             />
           </FormField>
           {this.state.bidFlag ? (
             <Tooltip bottom right color="white" bg="red">
-              There is a highet bid.
+              There is a higher bid.
             </Tooltip>
           ) : null}
           <div>

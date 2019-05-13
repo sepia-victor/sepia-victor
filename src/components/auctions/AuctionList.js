@@ -51,7 +51,8 @@ class AuctionList extends Component {
       image: "",
 
       style: {
-        width: 1000
+        width: '80%',
+        paddingLeft: '10%'
       },
       showingInfoWindow: false,
       activeMarker: {},
@@ -95,7 +96,7 @@ class AuctionList extends Component {
     document.removeEventListener("click", this.closeNav);
   }
   openNav() {
-    const style = { width: 1000 };
+    const style = { width: '80%' };
     this.setState({ style });
     document.body.style.backgroundColor = "white";
   }
@@ -116,7 +117,7 @@ class AuctionList extends Component {
         <hr />
         <Flex wrap justifyContent="center">
           {this.state.auctions.map(auction => (
-            <Box key={auction.id} m={3} width={[1, 1/2, 1/4]}>
+            <Box key={auction.id} m={3} width={[1, 1, 1/2, 1/4]}>
               <Card
                 boxShadowSize="xl"
                 borderWidth={1}
@@ -148,7 +149,7 @@ class AuctionList extends Component {
                       <Text>Minimum Bid: ${auction.minimumBid}</Text>
                       <Text>Grab Now Bid: ${auction.buyNowBid}</Text>
                       <Divider />
-                      <Text bold>
+                      <Text bold color="red">
                         Ends:{" "}
                         {moment
                           .unix(auction.auctionEndDate.seconds)
@@ -170,15 +171,16 @@ class AuctionList extends Component {
 
         {this.state.singleAuction.id && (
           <Container maxWidth={1000}>
-            <div ref="snav" className="overlay" style={this.state.style}>
-              <Box color="white" bg="light-blue">
+              <Box color="text" bg="light-blue">
+            <div className="overlay" style={this.state.style}>
+              <Box color="text" bg="light-blue">
                 <div className="text-center">
                   <a
                     href="javascript:void(0)"
                     className="closebtn"
                     onClick={this.closeNav}
                   >
-                    <Icon name="close" color="white" />
+                    <Icon name="Close" color="white" />
                   </a>
                   {this.state.singleAuction.id && (
                     <Box key={this.state.singleAuction.id} p={3}>
@@ -198,6 +200,7 @@ class AuctionList extends Component {
                 <AddBid auctionId={this.state.singleAuction.id} />
               </Box>
             </div>
+            </Box>
           </Container>
         )}
       </div>
