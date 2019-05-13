@@ -11,8 +11,6 @@ const mapStyles = {
   }
 };
 
-const nearbyLocationIds = [];
-
 export class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +23,8 @@ export class CurrentLocation extends React.Component {
       },
       currAuctions: [],
       redirect: false,
-      markerId: 0
+      markerId: 0,
+      nearbyLocationIds: []
     };
 
     this.routeChange = this.routeChange.bind(this);
@@ -136,14 +135,14 @@ export class CurrentLocation extends React.Component {
               url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
             }
           });
-          marker.addListener('click', this.routeChange);
+          geoCircle.addListener('click', this.routeChange);
 
           if (this.state.markerId === marker.id) {
             this.map.setCenter({ lat: markerLat, lng: markerLng });
           }
 
-          nearbyLocationIds.push(marker.id);
-          console.log('nearbyLocationIds===> ', nearbyLocationIds);
+          this.state.nearbyLocationIds.push(marker.id);
+          console.log('nearbyLocationIds===> ', this.state.nearbyLocationIds);
         }
       }
     }
@@ -166,16 +165,16 @@ export class CurrentLocation extends React.Component {
 
   render() {
     const style = Object.assign({}, mapStyles.map);
-    console.log('nearbyLocationIds--->  ', nearbyLocationIds);
+    console.log('nearbyLocationIds--->  ', this.state.nearbyLocationIds);
     if (this.state.redirect) {
       return (
         <div>
-          {nearbyLocationIds.length > 0 && (
+          {this.state.nearbyLocationIds.length > 0 && (
             <Redirect
               push
               to={{
                 pathname: '/auctions',
-                state: { nearbyLocationIds: nearbyLocationIds }
+                state: { nearbyLocationIds: this.state.nearbyLocationIds }
               }}
             />
           )}

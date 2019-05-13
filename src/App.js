@@ -74,7 +74,14 @@ class App extends React.Component {
               <SideDrawer />
               <div className="container">
                 <Route exact path="/" component={Landing} />
-                <Route exact path="/auctions" component={Auction} />
+                <Route
+                  exact
+                  path="/auctions"
+                  component={Auction}
+                  // nearbyLocationIds={
+                  //   this.props.location.state.nearbyLocationIds
+                  // }
+                />
                 <Route exact path="/maps" component={MapContainer} />
                 <Route
                   exact
