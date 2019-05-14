@@ -40,8 +40,9 @@ exports.liveCheck = functions.pubsub.schedule('0 * * * *').onRun(async(context)=
   let response = auctions
   auctions.forEach(async auction=>{
     console.log("I'm still here.")
-    if (Date.now() > auction.data().auctionEndDate.seconds){
-      console.log('Date Now', Date.now())
+    let auctionData = await auction.data()
+    if (Date.now() > auctionData.auctionEndDate.seconds){
+      console.log('Auction', auction.data())
       response = await admin.firestore().collection('auctions').doc(auction.id).update({
         live:false
       })
