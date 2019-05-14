@@ -14,8 +14,12 @@
   },
   "dependencies": {
     "firebase-admin": "~7.0.0",
+<<<<<<< HEAD
     "firebase-functions": "^2.3.0",
     "twilio": "^3.30.3"
+=======
+    "firebase-functions": "^2.3.1"
+>>>>>>> 060d0c89041a35dd2c6cf9ef810b25f8c1b731a4
   },
   "devDependencies": {
     "eslint": "^5.12.0",
