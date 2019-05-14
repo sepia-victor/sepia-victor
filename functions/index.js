@@ -52,6 +52,7 @@ exports.liveCheck = functions.pubsub.schedule('0 * * * *').onRun(async(context)=
   return response;
 })
 
+
 // Configure and set up Twilio instance
 const accountSid = 'ACa41998a0d75e32f3d61a8e7d71532b64';
 const authToken = TWILIO_AUTH_TOKEN;
