@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-import": "^2.17.2"
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-promise": "^4.1.1"
   }
 }
