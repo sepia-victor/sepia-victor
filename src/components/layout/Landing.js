@@ -4,7 +4,14 @@ import logo from '../../logo.svg';
 //Import the Firebase App as configured for our setup
 import fireApp from '../../fire';
 import '../../App.css';
-import { ThemeProvider } from 'pcln-design-system';
+import './Navbar.css';
+import {
+  ThemeProvider,
+  Link,
+  Box,
+  Heading,
+  BackgroundImage
+} from 'pcln-design-system';
 
 //Import the ACTUAL firebase library
 import firebase from 'firebase';
@@ -58,8 +65,27 @@ class Landing extends React.Component {
 
   render() {
     return (
-      <ThemeProvider>
-        <div className="Landing">
+      <div>
+        <ThemeProvider>
+          <BackgroundImage
+            height="500px"
+            image="https://images.pexels.com/photos/6517/parking-multi-storey-car-park.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500-cpa.com/wp-https://encrypted-tbn0.gstatic.com/images?q=tbn:http://efc.web.unc.edu/files/2014/06/ParkingLot.jpg/uploads/2019/01/parking-lot.jpg"
+          >
+            <Heading pl={8} align="center">
+              {this.state.isSignedIn !== undefined && !this.state.isSignedIn && (
+                <Box pt={6}>
+                  <StyledFirebaseAuth
+                    uiConfig={this.uiConfig}
+                    firebaseAuth={fireApp.auth()}
+                  />
+                </Box>
+              )}
+            </Heading>
+
+            {this.state.isSignedIn && <Redirect to="/maps" />}
+          </BackgroundImage>
+
+          {/* <div className="Landing">
           <header className="Landing-header">
             <img src={logo} className="Landing-logo" alt="logo" />
             <p>
@@ -80,18 +106,11 @@ class Landing extends React.Component {
             )}
             {this.state.isSignedIn && (
               <Redirect to="/maps" />
-
-              // <div>
-              //   Hello {fireApp.auth().currentUser.displayName}. You are now
-              //   signed In!
-              //   <a type="button" onClick={() => fireApp.auth().signOut()}>
-              //     Sign Out
-              //   </a>
-              // </div>
             )}
           </header>
-        </div>
-      </ThemeProvider>
+        </div> */}
+        </ThemeProvider>
+      </div>
     );
   }
 }
