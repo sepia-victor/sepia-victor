@@ -25,7 +25,9 @@ export default function Navbar() {
               color="yellow"
               textShadow="#FC0 1px 0 10px"
             >
-              Grab That Spot
+              <span style={{ textShadow: '#001833 2px 2px' }}>
+                Grab That Spot
+              </span>
             </Heading>
           </Link>
         </Box>
