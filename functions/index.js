@@ -8,30 +8,34 @@ const admin = require('firebase-admin')
 
 admin.initializeApp()
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebase!");
-});
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//  response.send("Hello from Firebase!");
+// });
 
-exports.scheduledFunctionCrontab = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    console.log('This will be run every day at 1:00 PM UTC!');
-});
+// exports.scheduledFunctionCrontab = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+//     console.log('This will be run every day at 1:00 PM UTC!');
+// });
 
-exports.scheduleTest = functions.pubsub.schedule('0 * * * *').onRun((context)=>{
-  console.log('Hi!')
+// exports.scheduleTest = functions.pubsub.schedule('0 * * * *').onRun((context)=>{
+//   console.log('Hi!')
 
-  return admin.firestore().collection('auctions').doc('ASYmSzFOlg6xhv2HfsMr').update({
-    live: false
-  })
-})
+//   return admin.firestore().collection('auctions').doc('ASYmSzFOlg6xhv2HfsMr').update({
+//     live: false
+//   })
+// })
 
-exports.scheduleTestB = functions.pubsub.schedule('30 * * * *').onRun(async (context)=>{
-  console.log('Bye!')
-  return await admin.firestore().collection('auctions').doc('ASYmSzFOlg6xhv2HfsMr').update({
-    live: true
-  })
-})
+// exports.scheduleTestB = functions.pubsub.schedule('30 * * * *').onRun(async (context)=>{
+//   console.log('Bye!')
+//   return await admin.firestore().collection('auctions').doc('ASYmSzFOlg6xhv2HfsMr').update({
+//     live: true
+//   })
+// })
 
-exports.scheduleTestC = functions.pubsub.schedule('0 * * * *').onRun(async(context)=>{
+//LiveCheck
+//Receives: Cron trigger
+//Does: Upon triggering, this function will run through every auction and check if the current time is greater than the enddate of the auction. If true, it updates the auction with a false status to live
+//Returns: Nothing of note
+exports.liveCheck = functions.pubsub.schedule('0 * * * *').onRun(async(context)=>{
   let auctions = await admin.firestore().collection('auctions').get()
   let response = auctions
   auctions.forEach(async auction=>{
