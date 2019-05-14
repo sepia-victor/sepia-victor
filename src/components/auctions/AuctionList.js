@@ -177,7 +177,6 @@ class AuctionList extends Component {
 
         {this.state.singleAuction.id && (
           <OverLayContainer>
-            <Flex>
             <Box bg="lightGray" color="text">
               <a href="javascript:void(0)" onClick={this.closeNav}>
                 <Icon name="Close" color="red" />
@@ -196,7 +195,6 @@ class AuctionList extends Component {
               </Box>
               <AddBid auctionId={this.state.singleAuction.id} />
             </Box>
-            </Flex>
           </OverLayContainer>
         )}
       </div>
