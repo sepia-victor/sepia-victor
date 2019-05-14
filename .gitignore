@@ -30,3 +30,4 @@ yarn-error.log*
 
 /src/keys.js
 functions/keys.js
+keys
