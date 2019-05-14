@@ -38,11 +38,12 @@ admin.initializeApp()
 exports.liveCheck = functions.pubsub.schedule('0 * * * *').onRun(async(context)=>{
   let auctions = await admin.firestore().collection('auctions').get()
   let response = auctions
+  let currSecs = Date.now() /1000 | 0
   auctions.forEach(async auction=>{
     console.log("I'm still here.")
     let auctionData = await auction.data()
-    if (Date.now() > auctionData.auctionEndDate.seconds){
-      console.log('Auction', auction.data())
+    if (currSecs > auctionData.auctionEndDate.seconds){
+      console.log('Auction time vs', currSecs)
       response = await admin.firestore().collection('auctions').doc(auction.id).update({
         live:false
       })
