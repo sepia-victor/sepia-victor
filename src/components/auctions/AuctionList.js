@@ -70,7 +70,7 @@ class AuctionList extends Component {
         lat: null,
         lng: null
       },
-      nearbyLocationIds: this.props.location.state.nearbyLocationIds
+      nearbyLocationIds: this.props.location.state?this.props.location.state.nearbyLocationIds:[]
     };
     this.handleSeeDetails = this.handleSeeDetails.bind(this);
     this.openNav = this.openNav.bind(this);
