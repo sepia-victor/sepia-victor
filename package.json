@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "countdown": "^2.6.0",
-    "eslint-config-react-app": "^4.0.1",
     "firebase": "^5.11.0",
     "firebase-cli": "^1.2.0",
     "firebase-tools": "^6.7.2",
@@ -21,16 +20,14 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "twilio": "^3.30.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -45,7 +42,6 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-promise": "^4.1.1"
   }
 }
