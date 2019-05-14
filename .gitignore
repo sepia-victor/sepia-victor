@@ -29,3 +29,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/keys.js
+functions/keys.js
