@@ -46,6 +46,10 @@ export default function Navbar() {
           <Link href="/auctions" color="white" ml={3}>
             Auctions
           </Link>
+                    {/* </Text> */} • {/* <Text ml="auto" mr={2}> */}
+          <Link href="/addAuction" color="white" ml={3}>
+            Add New Auction
+          </Link>
         </Text>
       </Flex>
 

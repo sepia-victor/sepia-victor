@@ -11,25 +11,26 @@ const addAuction = async (newAuctionData) => {
   let addAuctionQuery = fireApp.firestore().collection("auctions");
   try {
     let newAuction = null
-    if (newAuctionData){
-      newAuction = await addAuctionQuery.add(newAuctionData)
-    }else{
+
     newAuction = await addAuctionQuery.add({
-      availableStartDate: new firebase.firestore.Timestamp(0,0),
-      availableEndDate: new firebase.firestore.Timestamp(0, 0),
-      startDate: 0,
-      endDate: 1000,
-      minimumBid: 50,
-      buyNowBid: 200,
-      userId: "frfefrerf",
+      // availableStartDate: new firebase.firestore.Timestamp(0,0),
+      // availableEndDate: new firebase.firestore.Timestamp(0, 0),
+      availableStartDate: newAuctionData.availableStartDate,
+      availableEndDate: newAuctionData.availableEndDate,
+      auctionStartDate: newAuctionData.auctionStartDate,
+      auctionEndDate: newAuctionData.auctionEndDate,
+      minimumBid: newAuctionData.minimumBid,
+      userId: newAuctionData.userId,
       location: {
-        city: "New York",
-        state: "NY",
-        geoPosition: new firebase.firestore.GeoPoint( 1.345 , 3.456 ),
+        address: newAuctionData.streetAddress,
+        city: newAuctionData.city,
+        state: newAuctionData.state,
+        // geoPosition: new firebase.firestore.GeoPoint( 1.345 , 3.456 ),
+        geoPosition: newAuctionData.geoPoint,
       },
       live: true
     });
-    }
+
     console.log( 'doc written' , newAuction);
   } catch (error) {
     console.log(error);

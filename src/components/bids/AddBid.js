@@ -139,17 +139,15 @@ class AddBid extends Component {
       <Box px={3}>
         {this.state.auction.auctionEndDate && (
           <Text px={2} color="text">
-            <ReactMomentCountdown
+            Auction Ends in: <ReactMomentCountdown
               toDate={moment.unix(this.state.auction.auctionEndDate.seconds)}
             />
           </Text>
         )}
         <Text px={2} color="text">
-        {this.state.highestCurrBid ?
-            this.state.highestCurrBid.offer
-        :
-            this.state.auction.minimumBid
-        }
+        Current Bid: ${this.state.highestCurrBid
+            ? this.state.highestCurrBid.offer
+            : this.state.auction.minimumBid}
         </Text>
         <FormField>
           <Icon name="DollarCircle" color="text" size="20" />
