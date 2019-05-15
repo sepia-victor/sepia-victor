@@ -211,7 +211,12 @@ class AuctionList extends Component {
               <a href="javascript:void(0)" onClick={this.closeNav}>
                 <Icon name="Close" color="red" />
               </a>
-              <Box px={3} width={1 / 4} key={this.state.singleAuction.id}>
+              <Box px={3} width={1} key={this.state.singleAuction.id}>
+                <Heading fontSize={2} px={2}>
+                  {this.state.singleAuction.location.address?
+                  this.state.singleAuction.location.address:
+                  null}
+                </Heading>
                 <Text px={2}>
                   {this.state.singleAuction.location.city},{" "}
 
