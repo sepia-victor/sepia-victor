@@ -12,6 +12,7 @@ import Footer from './components/layout/Footer.js';
 import SideDrawer from './components/layout/SideDrawer';
 import Backdrop from './components/layout/Backdrop';
 import Auction from './components/auctions/AuctionList';
+import AddAuction from './components/auctions/AddAuction';
 import MapContainer from './components/maps/MapContainer';
 
 //Import the ACTUAL firebase library
@@ -85,9 +86,8 @@ class App extends React.Component {
                 <Route exact path="/maps" component={MapContainer} />
                 <Route
                   exact
-                  path="/bids"
-                  component={AddBid}
-                  auctionId="H8ud54fFftYOdZWdgD2v"
+                  path="/addAuction"
+                  component={AddAuction}
                 />
                 <Footer />
               </div>

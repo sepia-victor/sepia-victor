@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 // import { error } from "util";
-import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
-import googleConfig from '../../keys.js';
-import AddBid from '../bids/AddBid';
-import moment from 'moment';
-import fireApp from '../../fire';
-import styled from 'styled-components';
+import { GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
+import googleConfig from "../../keys.js";
+import AddBid from "../bids/AddBid";
+import moment from "moment";
+import fireApp from "../../fire";
+import styled from "styled-components";
 import {
   Card,
   Heading,
@@ -19,17 +19,17 @@ import {
   Flag,
   Banner,
   Divider
-} from 'pcln-design-system';
+} from "pcln-design-system";
 
 // import firebase from "firebase";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import {
   getAuctionsData,
   addAuction,
   getSingleAuctionData
-} from '../../scripts/Auctions.Data';
+} from "../../scripts/Auctions.Data";
 
 // import {
 //   getBidsData,
@@ -49,6 +49,9 @@ const OverLayContainer = styled(Container)`
   top: 35%;
   left: 10%;
   transition: 0.5s;
+  border-style: solid;
+  border-width: 1px;
+  border-color: "lightGray";
 `;
 
 class AuctionList extends Component {
@@ -56,13 +59,13 @@ class AuctionList extends Component {
     super(props);
     this.ref = fireApp
       .firestore()
-      .collection('auctions')
-      .where('live', '==', true);
+      .collection("auctions")
+      .where("live", "==", true);
     this.state = {
-      name: 'Foo',
+      name: "Foo",
       auctions: [],
       singleAuction: {},
-      image: '',
+      image: "",
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
@@ -70,7 +73,9 @@ class AuctionList extends Component {
         lat: null,
         lng: null
       },
-      nearbyLocationIds: this.props.location.state?this.props.location.state.nearbyLocationIds:[]
+      nearbyLocationIds: this.props.location.state
+        ? this.props.location.state.nearbyLocationIds
+        : []
     };
     this.handleSeeDetails = this.handleSeeDetails.bind(this);
     this.openNav = this.openNav.bind(this);
@@ -79,7 +84,7 @@ class AuctionList extends Component {
   }
 
   onCollectionUpdate = snapshot => {
-    console.log('onAuctionCollectionUpdate');
+    console.log("onAuctionCollectionUpdate");
     let auctionList = [];
     snapshot.forEach((doc, i) => {
       let data = doc.data();
@@ -91,7 +96,7 @@ class AuctionList extends Component {
       auctionList = auctionList.filter(data => {
         return this.state.nearbyLocationIds.includes(data.id);
       });
-      console.log('filtered--->    ', auctionList);
+      console.log("filtered--->    ", auctionList);
     }
 
     this.setState({
@@ -106,7 +111,7 @@ class AuctionList extends Component {
 
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
 
-    console.log('-->   ', this.state);
+    console.log("-->   ", this.state);
 
     this.unregisterAuthObserver = fireApp.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user });
@@ -125,18 +130,18 @@ class AuctionList extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.closeNav);
+    document.removeEventListener("click", this.closeNav);
   }
   openNav() {
     // const style = { width: "80%" };
     // this.setState({ style });
-    document.body.style.backgroundColor = '#F3F3F3';
+    document.body.style.backgroundColor = "#F3F3F3";
   }
 
   closeNav() {
     // const style = { width: 0 };
     // this.setState({ style });
-    document.body.style.backgroundColor = 'white';
+    document.body.style.backgroundColor = "white";
     this.setState({
       singleAuction: {}
     });
@@ -162,34 +167,34 @@ class AuctionList extends Component {
                     <Icon name="CarCircle" />
                     <Box pl={2}>
                       <Heading fontSize={2} bold>
-                        {auction.location.address? auction.location.address:null}
-
+                        {auction.location.address
+                          ? auction.location.address
+                          : null}
                       </Heading>
                       <Heading fontSize={2}>
-                      {auction.location.city}, {auction.location.state}
+                        {auction.location.city}, {auction.location.state}
                       </Heading>
                       <Divider />
                       <Text>
-                        Start:{' '}
+                        Start:{" "}
                         {moment
                           .unix(auction.availableStartDate.seconds)
-                          .format('ddd, h:mm a')}
+                          .format("ddd, h:mm a")}
                       </Text>
                       <Text>
-                        End:{' '}
+                        End:{" "}
                         {moment
                           .unix(auction.availableEndDate.seconds)
-                          .format('ddd, h:mm a')}
+                          .format("ddd, h:mm a")}
                       </Text>
                       <Divider />
                       <Text>Minimum Bid: ${auction.minimumBid}</Text>
-                      <Text>Grab Now Bid: ${auction.buyNowBid}</Text>
                       <Divider />
                       <Text bold color="red">
-                        Ends:{' '}
+                        Ends:{" "}
                         {moment
                           .unix(auction.auctionEndDate.seconds)
-                          .format('ddd, h:mm:ss a')}
+                          .format("ddd, h:mm:ss a")}
                       </Text>
                       <OutlineButton
                         size="small"
@@ -213,22 +218,20 @@ class AuctionList extends Component {
               </a>
               <Box px={3} width={1} key={this.state.singleAuction.id}>
                 <Heading fontSize={2} px={2}>
-                  {this.state.singleAuction.location.address?
-                  this.state.singleAuction.location.address:
-                  null}
+                  {this.state.singleAuction.location.address
+                    ? this.state.singleAuction.location.address
+                    : null}
                 </Heading>
                 <Text px={2}>
                   {this.state.singleAuction.location.city},{" "}
-
                   {this.state.singleAuction.location.state}
                 </Text>
+                <Divider />
                 <Text px={2}>
                   Minimum Bid: ${this.state.singleAuction.minimumBid}
                 </Text>
-                <Text px={2}>
-                  Grab Now Bid: ${this.state.singleAuction.buyNowBid}
-                </Text>
               </Box>
+              <Divider />
               <AddBid auctionId={this.state.singleAuction.id} />
             </Box>
           </OverLayContainer>
@@ -241,5 +244,3 @@ class AuctionList extends Component {
 export default GoogleApiWrapper({
   apiKey: googleConfig.GOOGLE_API_KEY
 })(AuctionList);
-
-
