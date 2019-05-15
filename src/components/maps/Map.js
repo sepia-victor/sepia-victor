@@ -135,7 +135,6 @@ export class CurrentLocation extends React.Component {
               url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
             }
           });
-          geoCircle.addListener('click', this.routeChange);
 
           if (this.state.markerId === marker.id) {
             this.map.setCenter({ lat: markerLat, lng: markerLng });
@@ -145,6 +144,23 @@ export class CurrentLocation extends React.Component {
           console.log('nearbyLocationIds===> ', this.state.nearbyLocationIds);
         }
       }
+
+      // HANDLE CIRCLE STUFF
+      geoCircle.addListener('click', this.routeChange);
+
+      var infowindow = new google.maps.InfoWindow({
+        content:
+          'Please click anywhere in the red circle to go to the auctions page'
+      });
+
+      google.maps.event.addListener(geoCircle, 'mouseover', function(ev) {
+        infowindow.setPosition(geoCircle.getCenter());
+        infowindow.open(map);
+      });
+
+      google.maps.event.addListener(geoCircle, 'mouseout', function(ev) {
+        infowindow.close(map);
+      });
     }
   }
 
