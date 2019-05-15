@@ -2,11 +2,101 @@ const TWILIO_AUTH_TOKEN = require('./keys.js');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin')
 const twilio = require('twilio');
+const nodemailer = require('nodemailer')
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 
 admin.initializeApp()
+
+
+// nodemailer setup
+const gmailEmail = "grabthatspot@gmail.com"
+const gmailPassword = "Fullstack1902"
+const mailTransport = nodemailer.createTransport({
+  service:'gmail',
+  auth: {
+    user: gmailEmail,
+    pass: gmailPassword
+  }
+})
+
+const APP_NAME = 'GrabThatSpot'
+
+//[EMAIL EXAMPLE FOLLOW]
+
+//sendWelcomeEmail
+exports.sendWelcomeEmail = functions.auth.user().onCreate((user)=>{
+  const email = user.email;
+  const displayName = user.displayName
+  return sendWelcomeEmail(email, displayName)
+})
+
+//sendWelcomeEmail(email, displayName)
+async function sendWelcomeEmail(email, displayName){
+  const mailOptions = {
+    from: `${APP_NAME} <noreply@grabthatspot.com>`,
+    to: email,
+  };
+
+  mailOptions.subject = `Welcome to ${APP_NAME}!`;
+  mailOptions.text = `Hey ${displayName || ''}! Welcome to ${APP_NAME}. I hope you enjoy our service!`;
+  await mailTransport.sendMail(mailOptions);
+  console.log('New Welcome Email sent to: ', email);
+  return null;
+}
+
+async function sendWinEmail(email, displayName){
+  console.log('email==> ', email)
+  console.log('displayName==> ',displayName)
+  const mailOptions = {
+    from: `${APP_NAME} <noreply@grabthatspot.com>`,
+    to: email,
+  }
+
+  mailOptions.subject= `You Grabbed that Spot!`;
+  mailOptions.text = `Hey ${displayName}! You won the auction you bid on!`
+  await mailTransport.sendMail(mailOptions);
+  console.log('sent victory email to: ', email);
+  return null
+}
+
+async function sendHostWinEmail(email, displayName, winnerName){
+  const mailOptions ={
+    from: `${APP_NAME} <noreply@grabthatspot.com>`,
+    to: email
+  }
+  mailOptions.subject= `Your Spot was Grabbed!`;
+  mailOptions.text = `Hey ${displayName}! You auction has ended, and your spot was won by ${winnerName}. You'll receive your payment soon!`
+  await mailTransport.sendMail(mailOptions);
+  console.log('sent host email to: ', email)
+}
+
+//Send Bid Complete emails
+exports.auctionEndEmail = functions.firestore.document('auctions/{auctionId}').onUpdate(async (change, context)=>{
+  // console.log('UpdateRun', change.after.data())
+  let changeId= await change.after.id;
+  const bidQuery = await admin.firestore().collection('auctions').doc(changeId).collection('bids').orderBy('offer','desc').limit(1).get()
+  let bidList=[]
+  const bid = await bidQuery.forEach(bid=>{
+    bidList.push(bid.data())
+  })
+  const highestBid = bidList[0]
+  const newState = change.after.data()
+  console.log('newState=> ', newState)
+  if (!newState.live){
+    const winningUser = await admin.auth().getUser(highestBid.userId)
+    const hostUser = await admin.auth().getUser(newState.userId)
+
+    sendWinEmail(winningUser.email, winningUser.displayName)
+    sendHostWinEmail(hostUser.email, hostUser.displayName, winningUser.displayName)
+
+  }
+})
+
+exports.wildCardsTest = functions.firestore.document('auctions/{auctionId}').onWrite((event)=>{
+  console.log('Hi! Event: ', event)
+})
 
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
