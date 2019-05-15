@@ -162,20 +162,24 @@ class AuctionList extends Component {
                     <Icon name="CarCircle" />
                     <Box pl={2}>
                       <Heading fontSize={2} bold>
-                        {auction.location.city}, {auction.location.state}
+                        {auction.location.address? auction.location.address:null}
+
+                      </Heading>
+                      <Heading fontSize={2}>
+                      {auction.location.city}, {auction.location.state}
                       </Heading>
                       <Divider />
                       <Text>
                         Start:{' '}
                         {moment
                           .unix(auction.availableStartDate.seconds)
-                          .format('ddd, h:mm:ss a')}
+                          .format('ddd, h:mm a')}
                       </Text>
                       <Text>
                         End:{' '}
                         {moment
                           .unix(auction.availableEndDate.seconds)
-                          .format('ddd, h:mm:ss a')}
+                          .format('ddd, h:mm a')}
                       </Text>
                       <Divider />
                       <Text>Minimum Bid: ${auction.minimumBid}</Text>
