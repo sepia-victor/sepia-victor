@@ -162,20 +162,24 @@ class AuctionList extends Component {
                     <Icon name="CarCircle" />
                     <Box pl={2}>
                       <Heading fontSize={2} bold>
-                        {auction.location.city}, {auction.location.state}
+                        {auction.location.address? auction.location.address:null}
+
+                      </Heading>
+                      <Heading fontSize={2}>
+                      {auction.location.city}, {auction.location.state}
                       </Heading>
                       <Divider />
                       <Text>
                         Start:{' '}
                         {moment
                           .unix(auction.availableStartDate.seconds)
-                          .format('ddd, h:mm:ss a')}
+                          .format('ddd, h:mm a')}
                       </Text>
                       <Text>
                         End:{' '}
                         {moment
                           .unix(auction.availableEndDate.seconds)
-                          .format('ddd, h:mm:ss a')}
+                          .format('ddd, h:mm a')}
                       </Text>
                       <Divider />
                       <Text>Minimum Bid: ${auction.minimumBid}</Text>
@@ -207,7 +211,12 @@ class AuctionList extends Component {
               <a href="javascript:void(0)" onClick={this.closeNav}>
                 <Icon name="Close" color="red" />
               </a>
-              <Box px={3} width={1 / 4} key={this.state.singleAuction.id}>
+              <Box px={3} width={1} key={this.state.singleAuction.id}>
+                <Heading fontSize={2} px={2}>
+                  {this.state.singleAuction.location.address?
+                  this.state.singleAuction.location.address:
+                  null}
+                </Heading>
                 <Text px={2}>
                   {this.state.singleAuction.location.city},{" "}
 

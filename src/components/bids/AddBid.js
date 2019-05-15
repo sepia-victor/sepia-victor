@@ -136,7 +136,7 @@ class AddBid extends Component {
       : this.state.auction.minimumBid;
 
     return (
-      <Box>
+      <Box px={3}>
         {this.state.auction.auctionEndDate && (
           <Text px={2} color="text">
             <ReactMomentCountdown
@@ -144,19 +144,17 @@ class AddBid extends Component {
             />
           </Text>
         )}
-        {this.state.highestCurrBid ? (
-          <Text px={2} color="text">
-            {this.state.highestCurrBid.offer}
-          </Text>
-        ) : (
-          <Text px={2} color="text">
-            {this.state.auction.minimumBid}
-          </Text>
-        )}
+        <Text px={2} color="text">
+        {this.state.highestCurrBid ?
+            this.state.highestCurrBid.offer
+        :
+            this.state.auction.minimumBid
+        }
+        </Text>
         <FormField>
           <Icon name="DollarCircle" color="text" size="20" />
           <Input
-            p={2}
+            width="50%"
             id="offer"
             name="offer"
             placeholder="Place Your Bid Here"
