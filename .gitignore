@@ -31,3 +31,5 @@ yarn-error.log*
 /src/keys.js
 functions/keys.js
 keys
+functions/gmailAuth.js
+src/components/maps/map.html

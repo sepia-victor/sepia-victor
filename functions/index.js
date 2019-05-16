@@ -3,6 +3,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin')
 const twilio = require('twilio');
 const nodemailer = require('nodemailer')
+const gmail = require('./gmailAuth')
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -11,13 +12,12 @@ admin.initializeApp()
 
 
 // nodemailer setup
-const gmailEmail = "grabthatspot@gmail.com"
-const gmailPassword = "Fullstack1902"
+
 const mailTransport = nodemailer.createTransport({
   service:'gmail',
   auth: {
-    user: gmailEmail,
-    pass: gmailPassword
+    user: gmail.email,
+    pass: gmail.password
   }
 })
 
