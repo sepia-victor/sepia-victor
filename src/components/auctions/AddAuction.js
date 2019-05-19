@@ -97,47 +97,51 @@ class AddAuction extends Component {
 
   render() {
     return (
-      <div>
-
-
-
+      <Container maxWidth={650}>
         <Heading m={3}>Add New Auction</Heading>
         <hr />
 
-        <InputGroup>
+
           <Flex flexDirection="column">
+          <Heading fontSize={2}>Parking Spot Available</Heading>
+            <Flex flexDirection='row'>
+            <InputGroup>
             <FormField>
-              <Label>Parking Spot is available from:</Label>
+              <Label fontSize={2}>From:</Label>
               <Input
                 name="availableStartDate"
                 placeholder="Start Date?"
                 type="date"
+                borderColor = 'blue'
                 onChange={this.handleChange}
               />
             </FormField>
             <FormField>
-              <Label>Parking Spot is available to:</Label>
+              <Label>To:</Label>
               <Input
                 name="availableEndDate"
                 placeholder="End Date?"
                 type="date"
                 onChange={this.handleChange}
-              />
+                />
             </FormField>
+                </InputGroup>
+            </Flex>
 
             <Divider />
-
+            <Heading fontSize={2}>Auction Runs</Heading>
+            <Flex flexDirection='row'>
+            <InputGroup>
             <FormField>
-              <Label>Auction Starts on:</Label>
+              <Label>From:</Label>
               <Input
                 name="auctionStartDate"
-                placeholder="Auction Start Date?"
                 type="date"
                 onChange={this.handleChange}
               />
             </FormField>
             <FormField>
-              <Label>Auction Ends on:</Label>
+              <Label>To:</Label>
               <Input
                 name="auctionEndDate"
                 placeholder="End Date?"
@@ -145,6 +149,8 @@ class AddAuction extends Component {
                 onChange={this.handleChange}
               />
             </FormField>
+            </InputGroup>
+            </Flex>
 
             <Divider />
 
@@ -152,7 +158,7 @@ class AddAuction extends Component {
               <Label>Street Adress:</Label>
               <Input
                 name="streetAddress"
-                placeholder="Street Address?"
+                placeholder="404 Content Lane"
                 onChange={this.handleChange}
               />
             </FormField>
@@ -160,7 +166,7 @@ class AddAuction extends Component {
               <Label>City:</Label>
               <Input
                 name="city"
-                placeholder="City?"
+                placeholder="Proxy Town"
                 onChange={this.handleChange}
               />
             </FormField>
@@ -168,7 +174,7 @@ class AddAuction extends Component {
               <Label>State:</Label>
               <Input
                 name="state"
-                placeholder="State?"
+                placeholder="Arizona"
                 onChange={this.handleChange}
               />
             </FormField>
@@ -181,7 +187,7 @@ class AddAuction extends Component {
               <Input
                 type="number"
                 name="minimumBid"
-                placeholder="Minimum Bid?"
+                placeholder="0"
                 mb={3}
                 onChange={this.handleChange}
               />
@@ -191,8 +197,7 @@ class AddAuction extends Component {
               Submit Auction
             </RedButton>
           </Flex>
-        </InputGroup>
-      </div>
+      </Container>
     );
   }
 }
