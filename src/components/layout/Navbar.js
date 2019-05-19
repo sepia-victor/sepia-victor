@@ -1,4 +1,5 @@
 import React from 'react';
+import fireApp from '../../fire'
 import {
   Flex,
   Link,
@@ -49,6 +50,10 @@ export default function Navbar() {
                     {/* </Text> */} • {/* <Text ml="auto" mr={2}> */}
           <Link href="/addAuction" color="white" ml={3}>
             Add New Auction
+          </Link>
+          {/* </Text> */} • {/* <Text ml="auto" mr={2}> */}
+          <Link href="/" onClick={()=>fireApp.auth().signOut()} color="white" ml={3}>
+            Logout
           </Link>
         </Text>
       </Flex>
