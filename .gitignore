@@ -33,3 +33,6 @@ functions/keys.js
 keys
 functions/gmailAuth.js
 src/components/maps/map.html
+functions/package-lock.json
+package-lock.json
+
